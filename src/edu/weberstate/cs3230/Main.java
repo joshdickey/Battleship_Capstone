@@ -1,36 +1,61 @@
 package edu.weberstate.cs3230;
 
-import javax.sound.midi.SysexMessage;
-import java.util.ArrayList;
-
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         // write your code here.
 
-
         int[][] battlefield = new int[10][10];
+        Scanner letterInput = new Scanner(System.in);
+        Scanner numInput = new Scanner(System.in);
+        Scanner cont = new Scanner(System.in);
+
         for (int i = 0; i < 10; i++){
             for (int j = 0; j<10; j++) {
-                if ((i + j)%5 ==0){
-                    battlefield[i][j] = 1;
-                }else {
-                    battlefield[i][j] = 0;
-                }
+                battlefield[i][j] = 0;
             }
         }
-        System.out.println(CheckIfEmpty("j",9,battlefield));
-        printBattlefield(battlefield);
+
+        boolean breakout = false;
+        while (!breakout) {
+
+            System.out.println("Enter a letter(A-J): ");
+            String letter = letterInput.nextLine();
+            int Y = convertY(letter);
+
+            System.out.println("Enter a number(1-10): ");
+            int X = Integer.parseInt(numInput.nextLine());
+
+            System.out.println(CheckIfEmpty(Y, X, battlefield));
+
+            markBattlefield(Y, X, battlefield);
+            printBattlefield(battlefield);
+
+            System.out.println("press Q to quit or Y to continue playing ");
+            String  again = cont.nextLine();
+            if (again.equalsIgnoreCase("q")){
+                breakout = true;
+            }
+        }
 
     }
 
-    private  static boolean CheckIfEmpty(String Y, int X, int[][] battlefield){
-        boolean isEmpty = false;
-        int yAxis = 0;
-        int xAxis = X - 1;
+    private static void markBattlefield(int Y, int X, int[][] battlefield) {
+        battlefield[Y][X-1] = 1;
+    }
 
-       // int[] yConverter = new int[] {1,2,3,4,5,6,7,8,9,10};
+    private static boolean CheckIfEmpty(int Y, int X, int[][] battlefield){
+        boolean isEmpty;
+        isEmpty = battlefield[Y][X-1] == 0;
+
+        return isEmpty;
+    }
+
+    private static int convertY(String Y){
+        int yAxis = 0;
+
         if (Y.equalsIgnoreCase("a")){
             yAxis = 0;
         }else if (Y.equalsIgnoreCase("b")){
@@ -54,12 +79,8 @@ public class Main {
         }else{
             System.out.println("Invalid input for letter A-J");
         }
-
-        isEmpty = battlefield[xAxis][yAxis] == 0;
-
-        return isEmpty;
+        return yAxis;
     }
-
     private static void printBattlefield(int[][] battlefield){
         for (int i = 0; i < 10; i++){
             for (int j = 0; j<10; j++) {
