@@ -28,9 +28,14 @@ public class Main {
             System.out.println("Enter a number(1-10): ");
             int X = Integer.parseInt(numInput.nextLine());
 
-            System.out.println(CheckIfEmpty(Y, X, battlefield));
+            if((CheckIfEmpty(Y, X, battlefield)) == true){
+                System.out.println("This cell is empty\n");
+            }else{
+                System.out.println("This cell has already been filled\n");
+            }
 
             markBattlefield(Y, X, battlefield);
+
             printBattlefield(battlefield);
 
             System.out.println("press Q to quit or Y to continue playing ");
@@ -81,14 +86,15 @@ public class Main {
         }
         return yAxis;
     }
+
     private static void printBattlefield(int[][] battlefield){
-        for (int i = 0; i < 10; i++){
-            for (int j = 0; j<10; j++) {
-                System.out.print(battlefield[i][j]);
-                if (j == 9){
-                    System.out.println("");
-                }
+
+        for (int[] i : battlefield){
+
+            for (int j : i){
+                System.out.print(j);
             }
+            System.out.println("");
         }
     }
 
