@@ -33,39 +33,39 @@ public class Game {
     private void setupGame(){
 
         Scanner coordinates = new Scanner(System.in);
-        int Y;
-        int X;
+        int y;
+        int x;
         GameBoard gameboard = new GameBoard(boardSize);
         boolean breakout;
 
         breakout = false;
         while (!breakout) {
-            System.out.println(String.format("Enter a letter A-%c: ", boardSize+64));
+            System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
             String letter = coordinates.next();
-            Y = GameBoard.convertY(letter);
+            y = GameBoard.convertY(letter);
 
             //validate letter is in bounds
-            if (Y == -1 ){
+            if (y == -1 ){
                 continue;
             }
-            else if (Y > boardSize || Y < 0){
-                System.out.println(String.format("You Must enter a letter from A-%c: ", boardSize+64));
+            else if (y > boardSize || y < 0){
+                System.out.println(String.format("You Must enter a letter from A-%c: ", changeYToRowLabel(boardSize)));
                 continue;
             }
 
             System.out.println("Enter a Number 1-" + boardSize + ": ");
-            X = Integer.parseInt(coordinates.next());
+            x = Integer.parseInt(coordinates.next());
 
-            if (X > boardSize || X < 1) {
+            if (x > boardSize || x < 1) {
                 System.out.println("You Must enter a number from 1-" + boardSize);
                 continue;
             }
 
-            if (!gameboard.CheckIfEmpty(Y,X)){
+            if (!gameboard.CheckIfEmpty(y,x)){
                 System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                 continue;
             }
-            gameboard.markGameboard(Y, X);
+            gameboard.markGameboard(y, x);
             gameboard.showGameboard();
 
             System.out.println("press Q to quit or Y to continue playing ");
@@ -85,6 +85,10 @@ public class Game {
 
         gameboard = new GameBoard(size);
         return gameboard;
+    }
+
+    public static int changeYToRowLabel(int row){
+        return  row + 64;
     }
 
 
