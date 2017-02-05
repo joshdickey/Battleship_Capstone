@@ -10,9 +10,9 @@ public class Coordinate {
     }
 
     public static int changeToRowIndex(char row){
-       char upperdaseChar = Character.toUpperCase(row);
+       char uppercaseChar = Character.toUpperCase(row);
 
-       return upperdaseChar - (int)'A';
+       return uppercaseChar - (int)'A';
     }
 
     public static Coordinate createInstance(){
