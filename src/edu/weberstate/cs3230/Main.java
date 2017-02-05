@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // write your code here.
 
         int[][] battlefield = new int[10][10];
         Scanner letterInput = new Scanner(System.in);
@@ -28,6 +27,7 @@ public class Main {
             System.out.println("Enter a number(1-10): ");
             int X = Integer.parseInt(numInput.nextLine());
 
+
             if((CheckIfEmpty(Y, X, battlefield)) == true){
                 System.out.println("This cell is empty\n");
             }else{
@@ -43,7 +43,53 @@ public class Main {
             if (again.equalsIgnoreCase("q")){
                 breakout = true;
             }
+
+
         }
+
+        Scanner coordinates = new Scanner(System.in);
+        int Y;
+        int X;
+        Gameboard game = new Gameboard(10);
+
+        breakout = false;
+        while (!breakout) {
+            System.out.println("Enter a letter A-J: ");
+            String letter = coordinates.next();
+            Y = convertY(letter);
+
+            //validate letter is in bounds
+            if (Y > 10 || Y < 0){
+                System.out.println("You Must enter a letter from A-J");
+                continue;
+            }
+
+            System.out.println("Enter a Number 1-10: ");
+            X = Integer.parseInt(coordinates.next());
+
+            if (X > 10 || X < 1) {
+                System.out.println("You Must enter a number from 1-10");
+                continue;
+            }
+
+            if (!game.CheckIfEmpty(Y,X)){
+                System.out.print("This cell has already been hit,\n\tchose again!\n\n");
+                continue;
+            }
+            game.markGameboard(Y, X);
+            game.showGameboard();
+
+            System.out.println("press Q to quit or Y to continue playing ");
+            String  again = cont.nextLine();
+            if (again.equalsIgnoreCase("q")){
+                breakout = true;
+            }
+        }
+
+        char row = 'A';
+        Coordinate.changeToRowIndex(row);
+
+        Coordinate coord = Coordinate.createInstance();
 
     }
 
