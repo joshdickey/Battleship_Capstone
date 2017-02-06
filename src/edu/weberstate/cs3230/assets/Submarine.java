@@ -17,11 +17,11 @@ public class Submarine extends Ship {
 
     @Override
     public int getShipSize() {
-        return 0;
+        return SHIP_SIZE;
     }
 
     @Override
     public int getHitCount() {
-        return 0;
+        return hitCount;
     }
 }

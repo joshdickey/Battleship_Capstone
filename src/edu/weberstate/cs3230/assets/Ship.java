@@ -7,6 +7,8 @@ public abstract class Ship {
 
     public enum shipStatus {Hit, Destroyed, Invalid}
     int hitCount;
+    String orientation;
+    private boolean placed;
 
     private String name;
 
@@ -22,6 +24,18 @@ public abstract class Ship {
     public abstract int getShipSize();
 
     public abstract int getHitCount();
+
+    public void markAsPlaced(){
+        placed = true;
+    }
+
+    public boolean getPlacedStatus(){
+        return placed;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
 
     public shipStatus damageShip(){
         shipStatus result = shipStatus.Invalid;

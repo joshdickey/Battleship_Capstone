@@ -1,5 +1,6 @@
 package edu.weberstate.cs3230;
 
+import edu.weberstate.cs3230.assets.Ship;
 import org.jetbrains.annotations.Contract;
 
 /**
@@ -7,18 +8,81 @@ import org.jetbrains.annotations.Contract;
  */
 public class GameBoard {
 
-    private String[][] battlefield;
+    private GameTile[][] battlefield;
     int size;
 
     public GameBoard(int boardSize){
         size = boardSize;
-        battlefield = new String[size][size];
+        battlefield = new GameTile[size][size];
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                battlefield[i][j] = "-";
+                battlefield[i][j] = new GameTile();
             }
         }
+    }
+
+    public <T> boolean placeInGameTile(T item, int x, int y){
+        boolean tileStatus = false;
+
+        if (battlefield[y][x - 1].hasShip()){
+            tileStatus = true;
+        }else {
+            tileStatus = false;
+            battlefield[y][x - 1].placeObject(item);
+        }
+        return tileStatus;
+    }
+
+//    private void placeShip(Ship ship, String orientation, int x, int y){
+//
+//        if (orientation.equalsIgnoreCase("Horizontal") && ship.getShipSize() + x <= size){
+//            System.out.print("ship is Horizontal");
+//
+//            while(placeInGameTile(ship, x, y)){
+//                placeInGameTile(ship, x, y);
+//            }
+//
+//        } else if (orientation.equalsIgnoreCase("Vertical") && ship.getShipSize() + y <= size){
+//            System.out.print("ship is Vertical");
+//        } else {
+//            System.out.print("ship is not placed");
+//        }
+//    }
+
+    @Contract(pure = true)
+    public boolean tileHasShip(int y, int x){
+        boolean notEmpty;
+        notEmpty = battlefield[y][x - 1].hasShip();
+
+        return notEmpty;
+    }
+
+    public void showGameBoard(){
+
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                if (battlefield[i][j].hasShip()) {
+                    System.out.print("X");
+                }else {
+                    System.out.print("-");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public String setItemOrientation(int orientation){
+        String orientationSet = "";
+        if (orientation == 1){
+            orientationSet = "Horizontal";
+        }else if (orientation == 2){
+            orientationSet = "Vertical";
+        }else {
+            orientationSet = "Not Set";
+        }
+
+        return orientationSet;
     }
 
     static int convertY(String Y){
@@ -31,32 +95,7 @@ public class GameBoard {
             yAxis = -1;
         }
 
-
         return yAxis;
     }
 
-    public void markGameboard(int Y, int X){
-
-        battlefield[Y][X-1] = "X";
-    }
-
-    @Contract(pure = true)
-    public boolean CheckIfEmpty(int Y, int X){
-        boolean isEmpty;
-        isEmpty = battlefield[Y][X-1] == "-";
-
-
-        return isEmpty;
-    }
-
-    public void showGameboard(){
-        for (String[] i :
-                battlefield){
-            for (String j :
-                    i) {
-                System.out.print(j);
-            }
-            System.out.println("");
-        }
-    }
 }

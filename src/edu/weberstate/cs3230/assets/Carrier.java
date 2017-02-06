@@ -10,7 +10,7 @@ public class Carrier extends Ship {
     private static final int SHIP_SIZE = 5;
 
     public  Carrier(){
-        this("Cruiser");
+        this("Carrier");
     }
 
     public Carrier(String name) {

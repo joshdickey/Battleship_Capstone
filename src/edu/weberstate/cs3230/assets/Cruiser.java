@@ -7,6 +7,7 @@ public class Cruiser extends Ship {
 
     private static final int SHIP_SIZE = 3;
 
+
     public Cruiser(){
         this("Cruiser");
     }
