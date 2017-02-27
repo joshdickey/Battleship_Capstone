@@ -98,4 +98,11 @@ public class GameBoard {
         return yAxis;
     }
 
+    public boolean ChieckIfEmpty(GameTile[][] board ){
+        boolean passed = false;
+
+
+        return passed;
+    }
+
 }

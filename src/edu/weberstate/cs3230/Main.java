@@ -5,7 +5,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Game myGame = new Game();
+
+
+        Game myGame = new Game(15);
         myGame.startGame();
 
     }
