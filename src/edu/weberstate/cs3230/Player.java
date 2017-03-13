@@ -8,6 +8,7 @@ public class Player {
     private  String name;
 
     public Player() {
+
     }
 
     public  String getName(){
@@ -15,6 +16,10 @@ public class Player {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null){
+            throw new IllegalArgumentException("Name cannot be null");
+        }else {
+            this.name = name;
+        }
     }
 }

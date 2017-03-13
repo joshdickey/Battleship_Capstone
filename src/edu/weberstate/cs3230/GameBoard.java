@@ -73,7 +73,7 @@ public class GameBoard {
     }
 
     public String setItemOrientation(int orientation){
-        String orientationSet = "";
+        String orientationSet;
         if (orientation == 1){
             orientationSet = "Horizontal";
         }else if (orientation == 2){
@@ -85,11 +85,11 @@ public class GameBoard {
         return orientationSet;
     }
 
-    static int convertY(String Y){
+    static int convertY(String y){
         int yAxis = 0;
 
-        if (Y.toUpperCase().charAt(0)< 64 || Y.toUpperCase().charAt(0) < 91) {
-            yAxis =  Y.toUpperCase().charAt(0) - 65;
+        if (y.toUpperCase().charAt(0)< 64 || y.toUpperCase().charAt(0) < 91) {
+            yAxis =  y.toUpperCase().charAt(0) - 65;
         }else{
             System.out.println("Invalid input for letter A-J");
             yAxis = -1;

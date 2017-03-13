@@ -1,39 +1,138 @@
 package edu.weberstate.cs3230;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.weberstate.cs3230.assets.*;
 
+import javax.sound.midi.Soundbank;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by joshd on 2/5/2017.
  */
-public class Game {
+public class ConsoleGame implements IGame{
 
     private int boardSize, numPlayers, x, y;
     private Player[] players;
     private List<Ship> ships;
     private GameBoard gameboard;
 
-    public Game() {
+    public ConsoleGame() {
         numPlayers = 1;
         boardSize = 10;
     }
-
-    public Game(int boardSize){
-        this.boardSize = boardSize;
-        this.numPlayers = 1;
-    }
-
 
     public void startGame(){
         gameboard = new GameBoard(boardSize);
         setupGame();
         generatePlayers();
+    }
+    public void startConsoleGameFromFile(){
+        gameboard = new GameBoard(boardSize);
+        generatePlayers();
+        setupGameFromFile();
+    }
+
+
+    @Override
+    public void setBoardSize(int boardSize) {
+        this.boardSize = boardSize;
+    }
+
+    @Override
+    public int getBoardSize() {
+        return boardSize;
+    }
+
+    @Override
+    public void addPlayer(String name) {
 
     }
 
+    private void setupGameFromFile() {
+
+        //generates ships into an array
+        generateShips();
+
+        boolean isPlaying = true;
+        boolean isValidInput = true;
+        String userInput;
+        while(isPlaying){
+
+            Logger logger = Logger.getLogger(Main.LOGGER_NAME);
+            logger.setLevel(Level.FINE);
+            Scanner scanner;
+            File file;
+            try {
+                file = new File("C:\\Users\\jdickey\\IdeaProjects\\CS3230_Battleship\\src\\edu\\weberstate\\cs3230\\resources\\userInput.txt");
+
+                scanner = new Scanner(new FileReader(file));
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                break;
+            }
+
+            while (isValidInput){
+
+                System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
+
+                userInput = scanner.next();
+                System.out.println(userInput);
+                y = GameBoard.convertY(userInput);
+
+                //validate letter is in bounds
+                if (y == -1 ){
+                    continue;
+                }
+                else if (y > boardSize || y < 0){
+                    System.out.println(String.format("You Must enter a letter from A-%c: \n", changeYToRowLabel(boardSize)));
+                    continue;
+                }
+
+                System.out.println("Enter a Number 1-" + boardSize + ": ");
+                userInput = scanner.next();
+                System.out.println(userInput);
+                x = Integer.parseInt(userInput);
+
+                if (x > boardSize || x < 1) {
+                    System.out.println("You Must enter a number from 1-" + boardSize);
+                    continue;
+                }
+
+                if (gameboard.tileHasShip(y,x)){
+                    System.out.print("This cell has already been hit,\n\tchose again!\n\n");
+                    continue;
+                }
+
+                Ship chosenShip = chooseAShip(scanner);
+                System.out.println(String.format("What orientation do you want to place your %s?",  chosenShip.getName()));
+                System.out.println("Place Horizontally = 1");
+                System.out.println("Place Vertically = 2");
+
+                int input = scanner.nextInt();
+                placeShip(chosenShip, gameboard.setItemOrientation(input));
+
+                gameboard.showGameBoard();
+
+                System.out.println("press * to quit or Y to continue playing ");
+
+                userInput = scanner.next();
+                if (userInput.matches("(?i)[*]")){
+                    System.out.println("\nQuitting the game");
+                    isPlaying = false;
+                    break;
+                }
+            }
+        }
+
+
+
+    }
 
     private void setupGame(){
 
@@ -56,7 +155,7 @@ public class Game {
                 continue;
             }
             else if (y > boardSize || y < 0){
-                System.out.println(String.format("You Must enter a letter from A-%c: ", changeYToRowLabel(boardSize)));
+                System.out.println(String.format("You Must enter a letter from A-%c: \n\tStarting Over", changeYToRowLabel(boardSize)));
                 continue;
             }
 
@@ -84,9 +183,9 @@ public class Game {
             gameboard.showGameBoard();
 
 //            placeShip(chosenShip, gameboard.setItemOrientation(chosenShip, 1));
-            System.out.println("press Q to quit or Y to continue playing ");
-            String  again = userInput.next();
-            if (again.equalsIgnoreCase("q")){
+            System.out.println("press * to quit or Y to continue playing ");
+            String again = userInput.next();
+            if (again.equalsIgnoreCase("*")){
                 breakout = true;
             }
         }
@@ -122,16 +221,16 @@ public class Game {
         boolean chooseShip = true;
 
         while (chooseShip) {
-            System.out.println("What Ship do you want to place?");
+            System.out.println("\nWhat Ship do you want to place?");
 
             for (Ship ship : ships) {
                 System.out.println(ship.getName() + " = " + count++);
             }
-
+            System.out.println();
             input = Integer.parseInt(choice.next());
 
             if (ships.get(input).getPlacedStatus()) {
-                System.out.println("This ship has already been placed");
+                System.out.println("\n\tThis ship has already been placed");
                 count = 0;
             }else {
                 chooseShip = false;
@@ -151,14 +250,16 @@ public class Game {
                 gameboard.placeInGameTile(ship, shipXPlacementIndex++, shipYPlacementIndex);
             }
             ship.markAsPlaced();
+            System.out.println("\nPlacing " + ship.getName());
         } else if (orientation.equalsIgnoreCase("Vertical") && ship.getShipSize() + y <= boardSize){
             System.out.print("ship is Vertical\n");
             for (int i = 0; i < ship.getShipSize(); i++) {
                 gameboard.placeInGameTile(ship, shipXPlacementIndex, shipYPlacementIndex++);
             }
             ship.markAsPlaced();
+            System.out.println("\nPlacing " + ship.getName());
         } else {
-            System.out.print("ship is not placed\n");
+            System.out.print("ship has not been placed\n\tship out of bounds");
         }
     }
 
