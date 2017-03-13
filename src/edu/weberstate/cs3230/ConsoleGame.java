@@ -79,7 +79,7 @@ public class ConsoleGame implements IGame{
 
             while (isValidInput){
 
-                System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
+                System.out.println(String.format("\nEnter a letter A-%c: ", changeYToRowLabel(boardSize)));
 
                 userInput = scanner.next();
                 System.out.println(userInput);
