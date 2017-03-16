@@ -6,13 +6,13 @@ package edu.weberstate.cs3230;
 public class GameTile<T> {
     private T object;
     private boolean hasObject;
-    private char objectMarker;
+    private String objectMarker = "-";
 
-    public char getObjectMarker() {
+    public String getObjectMarker() {
         return objectMarker;
     }
 
-    public void setObjectMarker(char objectMarker) {
+    public void setObjectMarker(String objectMarker) {
         this.objectMarker = objectMarker;
     }
 

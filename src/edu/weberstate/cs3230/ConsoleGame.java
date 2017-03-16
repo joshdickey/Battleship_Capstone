@@ -1,6 +1,5 @@
 package edu.weberstate.cs3230;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.weberstate.cs3230.assets.*;
 
 import java.io.*;
@@ -18,10 +17,10 @@ public class ConsoleGame implements IGame{
     private int boardSize, numPlayers, x, y;
     private List<Player> players;
     private List<Ship> ships;
-    private GameBoard gameboard;
     private Scanner scanner;
     private String gamePhase;
     private Player playing;
+    private String userInput;
 
     public ConsoleGame() {
         numPlayers = 2;
@@ -32,13 +31,15 @@ public class ConsoleGame implements IGame{
 //        gameboard = new GameBoard(boardSize);
         setupGame();
         generatePlayers(new Scanner(System.in));
+        startBattle(new Scanner(System.in));
     }
+
     public void startConsoleGameFromFile(){
 //        gameboard = new GameBoard(boardSize);
         generatePlayers(new Scanner(System.in));
         setupGameFromFile();
+        startBattle(new Scanner(System.in));
     }
-
 
     @Override
     public void setBoardSize(int boardSize) {
@@ -58,19 +59,18 @@ public class ConsoleGame implements IGame{
     private void setupGameFromFile() {
 
         //generates ships into an array for each player
-        for (Player player: players) {
+        for (Player player : players) {
             player.setPlayerShips(generateShips());
         }
 //        generateShips();
 
 //        int whoseTurn = 1;
 
-        boolean isPlaying = true;
+        boolean isSetup = false;
         boolean isValidInput = true;
-        String userInput;
 
 
-        while(isPlaying){
+        while (isSetup == false) {
             System.out.println("press * to quit anytime...");
             Logger logger = Logger.getLogger(Main.LOGGER_NAME);
             logger.setLevel(Level.FINE);
@@ -87,50 +87,29 @@ public class ConsoleGame implements IGame{
                 break;
             }
             int placedShipCount = 0;
-            if (placedShipCount < ships.size()){
+            if (placedShipCount < ships.size()) {
                 updateGamePhase("setup");
             }
 
 
-            while (isValidInput && placedShipCount < 10){
-                if (placedShipCount < 5){
+            while (isValidInput && placedShipCount < 10) {
+                if (placedShipCount < 5) {
                     playing = players.get(0);
-                }else {
+                } else {
                     playing = players.get(1);
                 }
 
-                System.out.println(String.format("\n" + playing.getName() + " Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
-
-                userInput = scanner.next();
-                System.out.println(userInput);
-                y = GameBoard.convertY(userInput);
-
-                //validate letter is in bounds
-                if (y == -1 ){
-                    continue;
-                }
-                else if (y > boardSize || y < 0){
-                    System.out.println(String.format("You Must enter a letter from A-%c: \n", changeYToRowLabel(boardSize)));
+                if (getCoordinate()){
                     continue;
                 }
 
-                System.out.println("\n" + playing.getName() + " Enter a Number 1-" + boardSize + ": ");
-                userInput = scanner.next();
-                System.out.println(userInput);
-                x = Integer.parseInt(userInput);
-
-                if (x > boardSize || x < 1) {
-                    System.out.println("You Must enter a number from 1-" + boardSize);
-                    continue;
-                }
-
-                if (playing.getGameboard().tileHasShip(x,y)){
+                if (playing.getGameboard().tileHasShip(x, y)) {
                     System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                     continue;
                 }
 
                 Ship chosenShip = chooseAShip(scanner, playing);
-                System.out.println(String.format("What orientation do you want to place your %s?",  chosenShip.getName()));
+                System.out.println(String.format("What orientation do you want to place your %s?", chosenShip.getName()));
                 System.out.println("Place Horizontally = 1");
                 System.out.println("Place Vertically = 2");
 
@@ -142,38 +121,88 @@ public class ConsoleGame implements IGame{
                 placedShipCount++;
 //                System.out.println("press * to quit or Y to continue playing ");
 
-                userInput = scanner.next();
-                if (userInput.matches("(?i)[*]")){
-                    System.out.println("\nQuitting the game");
-                    isPlaying = false;
+
+                if( placedShipCount == 10){
+                    isSetup = true;
                     break;
                 }
-            }
-            updateGamePhase("battle");
 
-
-            while(true){
-
-                int turnCount = 0;
-
-                if (turnCount%2 == 0) {
-                    playing = players.get(0);
-                }
-                if (turnCount%2 != 0){
-                    playing = players.get(1);
+                userInput = scanner.next();
+                if (userInput.matches("(?i)[*]")) {
+                    System.out.println("\nQuitting the game");
+                    isSetup = true;
+                    break;
                 }
 
-                System.out.println("\n" + playing.getName() + "'s board\n");
-                playing.getGameboard().showGameBoardWithShips();
-
-                updateGamePhase("setup");
-
-                System.out.println("\n" + playing.getName() + "'s board\n");
-                playing.getGameboard().showGameBoardWithShips();
-                break;
             }
+        }
+    }
+
+    private boolean getCoordinate() {
+        System.out.println(String.format("\n" + playing.getName() + " Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
+
+        userInput = scanner.next();
+        System.out.println(userInput);
+        y = GameBoard.convertY(userInput);
+
+        //validate letter is in bounds
+        if (validateY(y)) return true;
+
+        System.out.println("\n" + playing.getName() + " Enter a Number 1-" + boardSize + ": ");
+        userInput = scanner.next();
+        System.out.println(userInput);
+        x = Integer.parseInt(userInput);
+
+        if (validateX(x)) return true;
+
+        return false;
+    }
+
+    public void startBattle(Scanner scanner){
+
+        divider("+");
+        System.out.println("\nStarting Battle");
+        divider("+");
+        updateGamePhase("battle");
+
+        while (true) {
+
+            int turnCount = 0;
+
+            if (turnCount % 2 == 0) {
+                playing = players.get(0);
+            }
+            if (turnCount % 2 != 0) {
+                playing = players.get(1);
+            }
+
+            System.out.println("\n" + players.get(0).getName() + "'s board");
+            divider("+-");
+            players.get(0).getGameboard().showGameBoardWithShips();
+            System.out.println("\n" + players.get(1).getName() + "'s board");
+            divider("+-");
+            players.get(1).getGameboard().showGameboardWithHits();
+            divider("+-");
+            System.out.println(playing.getName() + ": Fire a Missile..");
+
+
+//            fireMissle(playing.getGameboard(),getCoordinateX(), getCoordinateY() );
+            fireMissle(getCoordinateX(), getCoordinateY());
+
+            playing.getGameboard().showGameBoardWithShips();
+
+
+            break;
 
         }
+    }
+
+    private void divider(String s) {
+        System.out.println();
+        for(int i = 0; i < 20; i++){
+            System.out.print(s);
+        }
+        System.out.println();
     }
 
     private void updateGamePhase(String phaseName) {
@@ -230,7 +259,7 @@ public class ConsoleGame implements IGame{
                 continue;
             }
 
-            if (gameboard.tileHasShip(y,x)){
+            if (playing.getGameboard().tileHasShip(y,x)){
                 System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                 continue;
             }
@@ -341,15 +370,73 @@ public class ConsoleGame implements IGame{
         }
     }
 
-    private void fireMissle(GameBoard gameBoard, int x, int y){
-        Ship ship = gameBoard.getShipFromTile(x,y);
+    private void fireMissle(int x, int y){
 
-        if (gameBoard.tileHasShip(x, y)){
+
+
+        if (playing.getGameboard().tileHasShip(x, y)){
+            Ship ship = playing.getGameboard().getShipFromTile(x, y);
             System.out.println(ship.damageShip());
-            gameBoard.markBoard(ship, x, y);
-
+//            gameBoard.markBoard(ship, x, y);
         }else {
             System.out.println("\nMISS!");
+//            gameBoard.markBoard(ship, x, y);
+            //for testing
+
         }
+        playing.getGameboard().markBoard(x, y);
+
+
     }
+
+    public int getCoordinateY() {
+        int coordinateY;
+
+        while (true) {
+            System.out.println(String.format("\n" + playing.getName() + " Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
+
+            userInput = scanner.next();
+            System.out.println(userInput);
+            coordinateY = GameBoard.convertY(userInput);
+
+            //validate letter is in bounds
+            if (!validateY(coordinateY)) break ;
+        }
+
+        return coordinateY;
+    }
+
+    private boolean validateY(int coordinateY) {
+        if (coordinateY == -1) {
+            return true;
+        } else if (coordinateY > boardSize || coordinateY < 0) {
+            System.out.println(String.format("You Must enter a letter from A-%c: \n", changeYToRowLabel(boardSize)));
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateX(int coordinateX) {
+        if (coordinateX > boardSize || coordinateX < 1) {
+            System.out.println("You Must enter a number from 1-" + boardSize);
+            return true;
+        }
+        return false;
+    }
+
+    public int getCoordinateX() {
+        int coordinateX;
+
+        while (true){
+            System.out.println("\n" + playing.getName() + " Enter a Number 1-" + boardSize + ": ");
+            userInput = scanner.next("(?i)[1-10]");
+            System.out.println(userInput);
+            coordinateX = Integer.parseInt(userInput);
+
+            if (!validateX(coordinateX)) break;
+
+        }
+        return coordinateX;
+    }
+
 }
