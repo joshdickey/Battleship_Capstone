@@ -6,6 +6,8 @@ package edu.weberstate.cs3230.assets;
 public abstract class Ship {
 
     public enum shipStatus {Hit, Destroyed, Invalid}
+
+    private String status;
     int hitCount;
     String orientation;
     private boolean placed;
@@ -42,6 +44,7 @@ public abstract class Ship {
         hitCount++;
 
         if (hitCount < this.getShipSize()){
+            status = "Hit";
             result = shipStatus.Hit;
         }else {
             result = shipStatus.Destroyed;

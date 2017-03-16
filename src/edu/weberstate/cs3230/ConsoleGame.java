@@ -3,7 +3,6 @@ package edu.weberstate.cs3230;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.weberstate.cs3230.assets.*;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,8 @@ public class ConsoleGame implements IGame{
     private List<Ship> ships;
     private GameBoard gameboard;
     private Scanner scanner;
+    private String gamePhase;
+    private Player playing;
 
     public ConsoleGame() {
         numPlayers = 2;
@@ -63,19 +64,21 @@ public class ConsoleGame implements IGame{
 //        generateShips();
 
 //        int whoseTurn = 1;
-        Player playing;
+
         boolean isPlaying = true;
         boolean isValidInput = true;
         String userInput;
-        while(isPlaying){
 
+
+        while(isPlaying){
+            System.out.println("press * to quit anytime...");
             Logger logger = Logger.getLogger(Main.LOGGER_NAME);
             logger.setLevel(Level.FINE);
 
             File file;
 
             try {
-                file = new File("C:\\CodeDepo\\WSU\\3230\\CS3230_Battleship\\src\\edu\\weberstate\\cs3230\\resources\\userInput.txt");
+                file = new File("C:\\Users\\jdickey\\IdeaProjects\\CS3230_Battleship\\src\\edu\\weberstate\\cs3230\\resources\\userInput.txt");
 
                 scanner = new Scanner(new FileReader(file));
 
@@ -84,6 +87,10 @@ public class ConsoleGame implements IGame{
                 break;
             }
             int placedShipCount = 0;
+            if (placedShipCount < ships.size()){
+                updateGamePhase("setup");
+            }
+
 
             while (isValidInput && placedShipCount < 10){
                 if (placedShipCount < 5){
@@ -91,6 +98,7 @@ public class ConsoleGame implements IGame{
                 }else {
                     playing = players.get(1);
                 }
+
                 System.out.println(String.format("\n" + playing.getName() + " Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
 
                 userInput = scanner.next();
@@ -116,7 +124,7 @@ public class ConsoleGame implements IGame{
                     continue;
                 }
 
-                if (playing.getGameboard().tileHasShip(y,x)){
+                if (playing.getGameboard().tileHasShip(x,y)){
                     System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                     continue;
                 }
@@ -130,9 +138,9 @@ public class ConsoleGame implements IGame{
                 placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
 
                 System.out.println("\n" + playing.getName() + "'s board\n");
-                playing.getGameboard().showGameBoard();
+                playing.getGameboard().showGameBoardWithShips();
                 placedShipCount++;
-                System.out.println("press * to quit or Y to continue playing ");
+//                System.out.println("press * to quit or Y to continue playing ");
 
                 userInput = scanner.next();
                 if (userInput.matches("(?i)[*]")){
@@ -141,6 +149,38 @@ public class ConsoleGame implements IGame{
                     break;
                 }
             }
+            updateGamePhase("battle");
+
+
+            while(true){
+
+                int turnCount = 0;
+
+                if (turnCount%2 == 0) {
+                    playing = players.get(0);
+                }
+                if (turnCount%2 != 0){
+                    playing = players.get(1);
+                }
+
+                System.out.println("\n" + playing.getName() + "'s board\n");
+                playing.getGameboard().showGameBoardWithShips();
+
+                updateGamePhase("setup");
+
+                System.out.println("\n" + playing.getName() + "'s board\n");
+                playing.getGameboard().showGameBoardWithShips();
+                break;
+            }
+
+        }
+    }
+
+    private void updateGamePhase(String phaseName) {
+        gamePhase = phaseName;
+
+        for (Player player: players) {
+            player.getGameboard().setGamePhase(gamePhase);
         }
     }
 
@@ -206,7 +246,7 @@ public class ConsoleGame implements IGame{
 
             System.out.println("\n" + playing.getName() + "'s board\n");
            // gameboard.placeInGameTile( chosenShip, x, y);
-            playing.getGameboard().showGameBoard();
+            playing.getGameboard().showGameBoardWithShips();
 
 //            placeShip(chosenShip, gameboard.setItemOrientation(chosenShip, 1));
             System.out.println("press * to quit or Y to continue playing ");
@@ -222,7 +262,7 @@ public class ConsoleGame implements IGame{
 
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player());
-            System.out.println("\nEnter name for Player " + i+1 + ": ");
+            System.out.println("\nEnter name for Player " + (i+1) + ": ");
             String name = scanner.nextLine();
             players.get(i).setName(name);
 //            players[i].setName(name);
@@ -301,5 +341,15 @@ public class ConsoleGame implements IGame{
         }
     }
 
+    private void fireMissle(GameBoard gameBoard, int x, int y){
+        Ship ship = gameBoard.getShipFromTile(x,y);
 
+        if (gameBoard.tileHasShip(x, y)){
+            System.out.println(ship.damageShip());
+            gameBoard.markBoard(ship, x, y);
+
+        }else {
+            System.out.println("\nMISS!");
+        }
+    }
 }

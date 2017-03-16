@@ -3,6 +3,8 @@ package edu.weberstate.cs3230;
 import edu.weberstate.cs3230.assets.Ship;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Objects;
+
 /**
  * Created by joshd on 1/19/2017.
  */
@@ -10,6 +12,7 @@ public class GameBoard {
 
     private GameTile[][] battlefield;
     int size;
+    private String gamePhase;
 
     public GameBoard(int boardSize){
         size = boardSize;
@@ -22,16 +25,44 @@ public class GameBoard {
         }
     }
 
-    public <T> boolean placeInGameTile(T item, int x, int y){
+    public void setGamePhase(String gamePhase) {
+        this.gamePhase = gamePhase;
+    }
+
+    //    public <T> boolean placeInGameTile(T item, int x, int y){
+    public boolean placeInGameTile(Ship ship, int x, int y){
         boolean tileStatus = false;
 
-        if (battlefield[y][x - 1].hasShip()){
+        char shipType = '-';
+
+        if  (Objects.equals(ship.getName(), "Carrier")){
+            shipType = 'C';
+        }else if (Objects.equals(ship.getName(), "Battleship")){
+            shipType = 'B';
+        }else if (Objects.equals(ship.getName(), "Cruiser")){
+            shipType = 'Z';
+        }else if (Objects.equals(ship.getName(), "Destroyer")){
+            shipType = 'D';
+        }else if (Objects.equals(ship.getName(), "Submarine")){
+            shipType = 'S';
+        }else {
+            shipType = '*';
+        }
+
+        if (battlefield[y][x - 1].hasObject()){
             tileStatus = true;
+
         }else {
             tileStatus = false;
-            battlefield[y][x - 1].placeObject(item);
+            battlefield[y][x - 1].placeObject(ship);
+            battlefield[y][x - 1].setObjectMarker(shipType);
+
         }
         return tileStatus;
+    }
+    public Ship getShipFromTile(int x, int y){
+        Ship ship = (Ship) battlefield[y][x -1].getObject();
+        return ship;
     }
 
 //    private void placeShip(Ship ship, String orientation, int x, int y){
@@ -51,21 +82,51 @@ public class GameBoard {
 //    }
 
     @Contract(pure = true)
-    public boolean tileHasShip(int y, int x){
+    public boolean tileHasShip(int x, int y){
         boolean notEmpty;
-        notEmpty = battlefield[y][x - 1].hasShip();
+        notEmpty = battlefield[y][x - 1].hasObject();
 
         return notEmpty;
     }
 
-    public void showGameBoard(){
+    public void showGameBoardWithShips(){
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                if (battlefield[i][j].hasShip()) {
-                    System.out.print("X");
-                }else {
-                    System.out.print("-");
+                if(gamePhase.equals("setup")) {
+                    if (battlefield[i][j].hasObject()) {
+                        System.out.print(battlefield[i][j].getObjectMarker());
+                    } else {
+                        System.out.print("-");
+                    }
+                }
+                if (gamePhase.equalsIgnoreCase("battle")){
+                    if (battlefield[i][j].hasObject()) {
+                        if(battlefield[i][j].getObjectMarker() == 'X') {
+                            System.out.print(battlefield[i][j].getObjectMarker());
+                        }
+                        if(battlefield[i][j].getObjectMarker() == '0') {
+                            System.out.print(battlefield[i][j].getObjectMarker());
+                        }else {
+                            System.out.print("-");
+                        }
+                    } else {
+                        System.out.print("-");
+                    }
+                }
+            }
+            System.out.println();
+        }
+
+    }
+
+    public void showGameboardWithHits(){
+
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                if (tileHasShip(i,j)) {
+                    Ship ship = (Ship) battlefield[i][j].getObject();
+
                 }
             }
             System.out.println();
@@ -105,4 +166,17 @@ public class GameBoard {
         return passed;
     }
 
+    public void markBoard(Ship ship, int x, int y) {
+
+
+        if (tileHasShip(x, y)){
+            System.out.println(ship.damageShip());
+            battlefield[y][x-1].setObjectMarker('X');
+
+        }else {
+            System.out.println("\nMISS!");
+            battlefield[y][x-1].setObjectMarker('0');
+        }
+
+    }
 }
