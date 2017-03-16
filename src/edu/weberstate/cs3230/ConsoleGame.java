@@ -17,23 +17,24 @@ import java.util.logging.Logger;
 public class ConsoleGame implements IGame{
 
     private int boardSize, numPlayers, x, y;
-    private Player[] players;
+    private List<Player> players;
     private List<Ship> ships;
     private GameBoard gameboard;
+    private Scanner scanner;
 
     public ConsoleGame() {
-        numPlayers = 1;
+        numPlayers = 2;
         boardSize = 10;
     }
 
     public void startGame(){
-        gameboard = new GameBoard(boardSize);
+//        gameboard = new GameBoard(boardSize);
         setupGame();
-        generatePlayers();
+        generatePlayers(new Scanner(System.in));
     }
     public void startConsoleGameFromFile(){
-        gameboard = new GameBoard(boardSize);
-        generatePlayers();
+//        gameboard = new GameBoard(boardSize);
+        generatePlayers(new Scanner(System.in));
         setupGameFromFile();
     }
 
@@ -55,9 +56,14 @@ public class ConsoleGame implements IGame{
 
     private void setupGameFromFile() {
 
-        //generates ships into an array
-        generateShips();
+        //generates ships into an array for each player
+        for (Player player: players) {
+            player.setPlayerShips(generateShips());
+        }
+//        generateShips();
 
+//        int whoseTurn = 1;
+        Player playing;
         boolean isPlaying = true;
         boolean isValidInput = true;
         String userInput;
@@ -65,10 +71,11 @@ public class ConsoleGame implements IGame{
 
             Logger logger = Logger.getLogger(Main.LOGGER_NAME);
             logger.setLevel(Level.FINE);
-            Scanner scanner;
+
             File file;
+
             try {
-                file = new File("C:\\Users\\jdickey\\IdeaProjects\\CS3230_Battleship\\src\\edu\\weberstate\\cs3230\\resources\\userInput.txt");
+                file = new File("C:\\CodeDepo\\WSU\\3230\\CS3230_Battleship\\src\\edu\\weberstate\\cs3230\\resources\\userInput.txt");
 
                 scanner = new Scanner(new FileReader(file));
 
@@ -76,10 +83,15 @@ public class ConsoleGame implements IGame{
                 e.printStackTrace();
                 break;
             }
+            int placedShipCount = 0;
 
-            while (isValidInput){
-
-                System.out.println(String.format("\nEnter a letter A-%c: ", changeYToRowLabel(boardSize)));
+            while (isValidInput && placedShipCount < 10){
+                if (placedShipCount < 5){
+                    playing = players.get(0);
+                }else {
+                    playing = players.get(1);
+                }
+                System.out.println(String.format("\n" + playing.getName() + " Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
 
                 userInput = scanner.next();
                 System.out.println(userInput);
@@ -94,7 +106,7 @@ public class ConsoleGame implements IGame{
                     continue;
                 }
 
-                System.out.println("Enter a Number 1-" + boardSize + ": ");
+                System.out.println("\n" + playing.getName() + " Enter a Number 1-" + boardSize + ": ");
                 userInput = scanner.next();
                 System.out.println(userInput);
                 x = Integer.parseInt(userInput);
@@ -104,21 +116,22 @@ public class ConsoleGame implements IGame{
                     continue;
                 }
 
-                if (gameboard.tileHasShip(y,x)){
+                if (playing.getGameboard().tileHasShip(y,x)){
                     System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                     continue;
                 }
 
-                Ship chosenShip = chooseAShip(scanner);
+                Ship chosenShip = chooseAShip(scanner, playing);
                 System.out.println(String.format("What orientation do you want to place your %s?",  chosenShip.getName()));
                 System.out.println("Place Horizontally = 1");
                 System.out.println("Place Vertically = 2");
 
                 int input = scanner.nextInt();
-                placeShip(chosenShip, gameboard.setItemOrientation(input));
+                placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
 
-                gameboard.showGameBoard();
-
+                System.out.println(playing.getName() + " board\n");
+                playing.getGameboard().showGameBoard();
+                placedShipCount++;
                 System.out.println("press * to quit or Y to continue playing ");
 
                 userInput = scanner.next();
@@ -129,9 +142,6 @@ public class ConsoleGame implements IGame{
                 }
             }
         }
-
-
-
     }
 
     private void setupGame(){
@@ -143,8 +153,12 @@ public class ConsoleGame implements IGame{
 
         generateShips();
 
+        int whoseTurn = 1;
+        Player playing;
         breakout = false;
         while (!breakout) {
+
+            playing = players.get(whoseTurn-1);
 
             System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
             String letter = userInput.next();
@@ -173,12 +187,12 @@ public class ConsoleGame implements IGame{
             }
 
 
-            Ship chosenShip = chooseAShip(userInput);
+            Ship chosenShip = chooseAShip(userInput, playing);
             System.out.println("Place Horizontally = 1");
             System.out.println("Place Vertically = 2");
 
             int input = userInput.nextInt();
-            placeShip(chosenShip, gameboard.setItemOrientation(input));
+            placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
            // gameboard.placeInGameTile( chosenShip, x, y);
             gameboard.showGameBoard();
 
@@ -191,15 +205,25 @@ public class ConsoleGame implements IGame{
         }
     }
 
-    private void generatePlayers() {
-        players = new Player[numPlayers];
+    private void generatePlayers(Scanner scanner) {
+        players = new ArrayList<>(2);
+
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player());
+            System.out.println("\nEnter name for Player " + i+1 + ": ");
+            String name = scanner.nextLine();
+            players.get(i).setName(name);
+//            players[i].setName(name);
+            players.get(i).setGameboard(new GameBoard(boardSize));
+//            players[i].setGameboard(new GameBoard(boardSize));
+        }
     }
 
     public static int changeYToRowLabel(int row){
         return  row + 64;
     }
 
-    private void generateShips(){
+    private List generateShips(){
         ships = new ArrayList<>(5);
         Ship carrier = new Carrier();
         Ship battleship = new Battleship();
@@ -213,12 +237,14 @@ public class ConsoleGame implements IGame{
         ships.add(submarine);
         ships.add(destroyer);
 
+        return ships;
     }
 
-    private Ship chooseAShip(Scanner choice){
+    private Ship chooseAShip(Scanner choice, Player player){
         int input = -1;
         int count = 0;
         boolean chooseShip = true;
+        ships = player.getPlayerShips();
 
         while (chooseShip) {
             System.out.println("\nWhat Ship do you want to place?");
@@ -240,7 +266,7 @@ public class ConsoleGame implements IGame{
         return ships.get(input);
     }
 
-    private void placeShip(Ship ship, String orientation){
+    private void placeShip(Ship ship, String orientation, GameBoard gameboard){
         int shipXPlacementIndex = x;
         int shipYPlacementIndex = y;
 
