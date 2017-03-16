@@ -129,7 +129,7 @@ public class ConsoleGame implements IGame{
                 int input = scanner.nextInt();
                 placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
 
-                System.out.println(playing.getName() + " board\n");
+                System.out.println("\n" + playing.getName() + "'s board\n");
                 playing.getGameboard().showGameBoard();
                 placedShipCount++;
                 System.out.println("press * to quit or Y to continue playing ");
@@ -148,23 +148,32 @@ public class ConsoleGame implements IGame{
 
         Scanner userInput = new Scanner(System.in);
 
-        gameboard = new GameBoard(boardSize);
+//        gameboard = new GameBoard(boardSize);
         boolean breakout;
 
-        generateShips();
+
+        //generates ships into an array for each player
+        for (Player player: players) {
+            player.setPlayerShips(generateShips());
+        }
+//        generateShips();
 
         int whoseTurn = 1;
         Player playing;
         breakout = false;
+        int placedShipCount = 0;
         while (!breakout) {
 
-            playing = players.get(whoseTurn-1);
+            if (placedShipCount < 5){
+                playing = players.get(0);
+            }else {
+                playing = players.get(1);
+            }
 
             System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
             String letter = userInput.next();
             y = GameBoard.convertY(letter);
 
-            //validate letter is in bounds
             if (y == -1 ){
                 continue;
             }
@@ -193,8 +202,11 @@ public class ConsoleGame implements IGame{
 
             int input = userInput.nextInt();
             placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
+            placedShipCount++;
+
+            System.out.println("\n" + playing.getName() + "'s board\n");
            // gameboard.placeInGameTile( chosenShip, x, y);
-            gameboard.showGameBoard();
+            playing.getGameboard().showGameBoard();
 
 //            placeShip(chosenShip, gameboard.setItemOrientation(chosenShip, 1));
             System.out.println("press * to quit or Y to continue playing ");
