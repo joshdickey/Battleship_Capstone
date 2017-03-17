@@ -25,12 +25,12 @@ public class GameBoard {
         }
     }
 
-    public void setGamePhase(String gamePhase) {
+    void setGamePhase(String gamePhase) {
         this.gamePhase = gamePhase;
     }
 
     //    public <T> boolean placeInGameTile(T item, int x, int y){
-    public boolean placeInGameTile(Ship ship, int x, int y){
+    boolean placeInGameTile(Ship ship, int x, int y){
         boolean tileStatus = false;
 
         String shipType = "-";
@@ -60,7 +60,7 @@ public class GameBoard {
         }
         return tileStatus;
     }
-    public Ship getShipFromTile(int x, int y){
+    Ship getShipFromTile(int x, int y){
         Ship ship = (Ship) battlefield[y][x -1].getObject();
         return ship;
     }
@@ -82,14 +82,14 @@ public class GameBoard {
 //    }
 
     @Contract(pure = true)
-    public boolean tileHasShip(int x, int y){
+    boolean tileHasShip(int x, int y){
         boolean notEmpty;
         notEmpty = battlefield[y][x - 1].hasObject();
 
         return notEmpty;
     }
 
-    public void showGameBoardWithShips(){
+    void showGameBoardWithShips(){
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
@@ -105,7 +105,7 @@ public class GameBoard {
                         if(battlefield[i][j].getObjectMarker().equalsIgnoreCase("X")) {
                             System.out.print("X");
                         }
-                        if(battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
+                        else if(battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
                             System.out.print("0");
                         }else {
                             System.out.print("-");
@@ -116,21 +116,19 @@ public class GameBoard {
             }
     }
 
-    public void showGameboardWithHits(){
+    void showGameboardWithHits(){
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
 
-                if (battlefield[i][j].hasObject()) {
-                    if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("X")) {
-                        System.out.print(battlefield[i][j].getObjectMarker());
-                    }
-                    if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
-                        System.out.print(battlefield[i][j].getObjectMarker());
-                    } else {
-                        System.out.print("-");
-                    }
-                } else {
+//                if (battlefield[i][j].hasObject()) {
+                if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("X")) {
+                    System.out.print(battlefield[i][j].getObjectMarker());
+                }
+                if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
+                    System.out.print(battlefield[i][j].getObjectMarker());
+                }
+                else {
                     System.out.print("-");
                 }
             }
@@ -138,7 +136,7 @@ public class GameBoard {
         }
     }
 
-    public String setItemOrientation(int orientation){
+    String setItemOrientation(int orientation){
         String orientationSet;
         if (orientation == 1){
             orientationSet = "Horizontal";
@@ -176,14 +174,14 @@ public class GameBoard {
 
         if (tileHasShip(x, y)){
 //            System.out.println(ship.damageShip());
-            System.out.println("HIT from MarkBoard");
+//            System.out.println("HIT from MarkBoard");
             battlefield[y][x-1].setObjectMarker("X");
 
         }else {
-            System.out.println("\nMISS from MarkBoard");
+//            System.out.println("\nMISS from MarkBoard");
             battlefield[y][x-1].setObjectMarker("0");
 
         }
-        System.out.println(battlefield[y][x-1].getObjectMarker());
+//        System.out.println(battlefield[y][x-1].getObjectMarker());
     }
 }

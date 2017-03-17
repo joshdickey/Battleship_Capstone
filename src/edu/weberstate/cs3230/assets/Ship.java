@@ -14,9 +14,14 @@ public abstract class Ship {
 
     private String name;
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     protected Ship(String name){
         this.name = name;
         this.hitCount = 0;
+        this.status = "Undamaged";
     }
 
     public final String getName(){
@@ -24,6 +29,10 @@ public abstract class Ship {
     }
 
     public abstract int getShipSize();
+
+    public String getStatus() {
+        return status;
+    }
 
     public abstract int getHitCount();
 
@@ -44,10 +53,11 @@ public abstract class Ship {
         hitCount++;
 
         if (hitCount < this.getShipSize()){
-            status = "Hit";
+            setStatus("Hit");
             result = shipStatus.Hit;
         }else {
             result = shipStatus.Destroyed;
+            setStatus("Destroyed");
         }
         return result;
     }

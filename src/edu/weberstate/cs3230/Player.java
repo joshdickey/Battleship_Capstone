@@ -11,8 +11,11 @@ public class Player {
     private  String name;
     private List<Ship> playerShips;
     private GameBoard gameboard;
+    private boolean winner;
+
 
     public Player() {
+        winner = false;
 
     }
 
@@ -43,5 +46,25 @@ public class Player {
         }else {
             this.name = name;
         }
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+
+
+    public void removeDestroyedShip() {
+        for (int i = 0 ; i < playerShips.size(); i++){
+            if(playerShips.get(i).getStatus().equalsIgnoreCase("destroyed")){
+                playerShips.remove(i);
+                break;
+            }
+
+        }
+
     }
 }
