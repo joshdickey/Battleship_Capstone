@@ -90,25 +90,33 @@ public class GameBoard {
     }
 
     void showGameBoardWithShips(){
+        for (int i = 0; i < size; i++){
+            if ( i == 0){
+                System.out.print(" ");
+            }
+            System.out.print( " " + (i+1));
+        }
+        System.out.println();
 
         for (int i = 0; i < size; i++){
+            System.out.printf("%c ", i+65);
             for (int j = 0; j < size; j++){
                 if(gamePhase.equals("setup")) {
                     if (battlefield[i][j].hasObject()) {
-                        System.out.print(battlefield[i][j].getObjectMarker());
+                        System.out.print(battlefield[i][j].getObjectMarker()+ " ");
                     } else {
-                        System.out.print("-");
+                        System.out.print("- ");
                     }
                 }
                 if (gamePhase.equalsIgnoreCase("battle")){
 //                    if (battlefield[i][j].hasObject()) {
                         if(battlefield[i][j].getObjectMarker().equalsIgnoreCase("X")) {
-                            System.out.print("X");
+                            System.out.print("X ");
                         }
                         else if(battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
-                            System.out.print("0");
+                            System.out.print("0 ");
                         }else {
-                            System.out.print("-");
+                            System.out.print("- ");
                         }
                     }
                 }
