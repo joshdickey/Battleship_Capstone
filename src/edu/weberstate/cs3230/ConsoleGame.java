@@ -30,8 +30,8 @@ public class ConsoleGame implements IGame{
 
     public void startGame(){
 //        gameboard = new GameBoard(boardSize);
-        setupGame();
         generatePlayers(new Scanner(System.in));
+        setupGame();
         startBattle(new Scanner(System.in));
     }
 
@@ -118,7 +118,7 @@ public class ConsoleGame implements IGame{
                 placeShip(chosenShip, attacker.getGameboard().setItemOrientation(input), attacker.getGameboard());
 
                 System.out.println("\n" + attacker.getName() + "'s board\n");
-                attacker.getGameboard().showGameBoardWithShips();
+                attacker.getGameboard().showGameBoard();
                 placedShipCount++;
 //                System.out.println("press * to quit or Y to continue attacker ");
 
@@ -189,10 +189,10 @@ public class ConsoleGame implements IGame{
 
             System.out.println("\n" + players.get(0).getName() + "'s board");
             divider("+-");
-            players.get(0).getGameboard().showGameBoardWithShips();
+            players.get(0).getGameboard().showGameBoard();
             System.out.println("\n" + players.get(1).getName() + "'s board");
             divider("+-");
-            players.get(1).getGameboard().showGameBoardWithShips();
+            players.get(1).getGameboard().showGameBoard();
             divider("+-");
             System.out.println(attacker.getName() + ": Fire a Missile..");
 
@@ -201,7 +201,7 @@ public class ConsoleGame implements IGame{
 
             fireMissile(x, y);
 
-//            attacker.getGameboard().showGameBoardWithShips();
+//            attacker.getGameboard().showGameBoard();
 
             if (defender.getPlayerShips().size() == 0){
                 attacker.setWinner(true);
@@ -235,74 +235,93 @@ public class ConsoleGame implements IGame{
 
     private void setupGame(){
 
-        Scanner userInput = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
 //        gameboard = new GameBoard(boardSize);
         boolean breakout;
-
 
         //generates ships into an array for each player
         for (Player player: players) {
             player.setPlayerShips(generateShips());
         }
-//        generateShips();
 
-        int whoseTurn = 1;
-        Player playing;
         breakout = false;
+        boolean isSetup = false;
+
         int placedShipCount = 0;
-        while (!breakout) {
+        if (placedShipCount < ships.size()) {
+            updateGamePhase("setup");
+            players.get(0).getGameboard().showGameBoard();
+        }
+
+
+        while (!isSetup) {
 
             if (placedShipCount < 5){
-                playing = players.get(0);
+                attacker = players.get(0);
             }else {
-                playing = players.get(1);
+                attacker = players.get(1);
             }
 
-            System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
-            String letter = userInput.next();
-            y = GameBoard.convertY(letter);
+//            attacker.getGameboard().showGameBoard();
 
-            if (y == -1 ){
+            if (getCoordinate()){
                 continue;
             }
-            else if (y > boardSize || y < 0){
-                System.out.println(String.format("You Must enter a letter from A-%c: \n\tStarting Over", changeYToRowLabel(boardSize)));
-                continue;
-            }
+//            System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
+//            String letter = userInput.next();
+//            y = GameBoard.convertY(letter);
+//
+//            if (y == -1 ){
+//                continue;
+//            }
+//            else if (y > boardSize || y < 0){
+//                System.out.println(String.format("You Must enter a letter from A-%c: \n\tStarting Over", changeYToRowLabel(boardSize)));
+//                continue;
+//            }
+//
+//            System.out.println("Enter a Number 1-" + boardSize + ": ");
+//            x = Integer.parseInt(userInput.next());
+//
+//            if (x > boardSize || x < 1) {
+//                System.out.println("You Must enter a number from 1-" + boardSize);
+//                continue;
+//            }
 
-            System.out.println("Enter a Number 1-" + boardSize + ": ");
-            x = Integer.parseInt(userInput.next());
-
-            if (x > boardSize || x < 1) {
-                System.out.println("You Must enter a number from 1-" + boardSize);
-                continue;
-            }
-
-            if (playing.getGameboard().tileHasShip(y,x)){
+            if (attacker.getGameboard().tileHasShip(x,y)){
                 System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                 continue;
             }
 
 
-            Ship chosenShip = chooseAShip(userInput, playing);
+            Ship chosenShip = chooseAShip(scanner, attacker);
+
+            System.out.println(String.format("What orientation do you want to place your %s?", chosenShip.getName()));
+
             System.out.println("Place Horizontally = 1");
             System.out.println("Place Vertically = 2");
 
-            int input = userInput.nextInt();
-            placeShip(chosenShip, playing.getGameboard().setItemOrientation(input), playing.getGameboard());
+            int input = scanner.nextInt();
+            placeShip(chosenShip, attacker.getGameboard().setItemOrientation(input), attacker.getGameboard());
             placedShipCount++;
 
-            System.out.println("\n" + playing.getName() + "'s board\n");
+            System.out.println("\n" + attacker.getName() + "'s board\n");
            // gameboard.placeInGameTile( chosenShip, x, y);
-            playing.getGameboard().showGameBoardWithShips();
+            attacker.getGameboard().showGameBoard();
 
 //            placeShip(chosenShip, gameboard.setItemOrientation(chosenShip, 1));
-            System.out.println("press * to quit or Y to continue attacker ");
-            String again = userInput.next();
-            if (again.equalsIgnoreCase("*")){
-                breakout = true;
+//            System.out.println("press * to quit or Y to continue ");
+
+            if( placedShipCount == 10){
+                isSetup = true;
+                break;
             }
+
+//            String again = scanner.next();
+//            if (equalsIgnoreCase("*")){
+//                isSetup = true;
+//                break;
+//            }
         }
     }
 
@@ -314,9 +333,7 @@ public class ConsoleGame implements IGame{
             System.out.println("\nEnter name for Player " + (i+1) + ": ");
             String name = scanner.nextLine();
             players.get(i).setName(name);
-//            players[i].setName(name);
             players.get(i).setGameboard(new GameBoard(boardSize));
-//            players[i].setGameboard(new GameBoard(boardSize));
         }
     }
 

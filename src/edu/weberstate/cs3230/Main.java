@@ -9,8 +9,8 @@ public class Main {
 
         ConsoleGame myConsoleGame = new ConsoleGame();
         myConsoleGame.setBoardSize(10);
-//        myConsoleGame.startGame();
-        myConsoleGame.startConsoleGameFromFile();
+        myConsoleGame.startGame();
+//        myConsoleGame.startConsoleGameFromFile();
 
     }
 

@@ -1,4 +1,4 @@
-package edu.weberstate.cs3230.assets;
+package edu.weberstate.cs3230;
 
 /**
  * Created by jdickey on 3/13/2017.

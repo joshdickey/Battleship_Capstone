@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CS3230_Battleship.iml" filepath="$PROJECT_DIR$/CS3230_Battleship.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Console/Console.iml" filepath="$PROJECT_DIR$/Console/Console.iml" />
     </modules>
   </component>
 </project>

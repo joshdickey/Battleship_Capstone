@@ -89,7 +89,7 @@ public class GameBoard {
         return notEmpty;
     }
 
-    void showGameBoardWithShips(){
+    void showGameBoard(){
         for (int i = 0; i < size; i++){
             if ( i == 0){
                 System.out.print(" ");
@@ -99,7 +99,7 @@ public class GameBoard {
         System.out.println();
 
         for (int i = 0; i < size; i++){
-            System.out.printf("%c ", i+65);
+            System.out.printf("%c ", 65 + i);
             for (int j = 0; j < size; j++){
                 if(gamePhase.equals("setup")) {
                     if (battlefield[i][j].hasObject()) {
@@ -122,26 +122,6 @@ public class GameBoard {
                 }
                 System.out.println();
             }
-    }
-
-    void showGameboardWithHits(){
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-
-//                if (battlefield[i][j].hasObject()) {
-                if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("X")) {
-                    System.out.print(battlefield[i][j].getObjectMarker());
-                }
-                if (battlefield[i][j].getObjectMarker().equalsIgnoreCase("0")) {
-                    System.out.print(battlefield[i][j].getObjectMarker());
-                }
-                else {
-                    System.out.print("-");
-                }
-            }
-            System.out.println();
-        }
     }
 
     String setItemOrientation(int orientation){
