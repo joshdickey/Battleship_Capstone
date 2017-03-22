@@ -1,7 +1,8 @@
-package edu.weberstate.cs3230;
+package edu.weberstate.cs3230.engine;
 
-import edu.weberstate.cs3230.assets.Ship;
-import org.jetbrains.annotations.Contract;
+
+//import edu.weberstate.cs3230.assets.Ship;
+//import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
@@ -25,12 +26,12 @@ public class GameBoard {
         }
     }
 
-    void setGamePhase(String gamePhase) {
+    public void setGamePhase(String gamePhase) {
         this.gamePhase = gamePhase;
     }
 
     //    public <T> boolean placeInGameTile(T item, int x, int y){
-    boolean placeInGameTile(Ship ship, int x, int y){
+    public boolean placeInGameTile(Ship ship, int x, int y){
         boolean tileStatus = false;
 
         String shipType = "-";
@@ -60,7 +61,7 @@ public class GameBoard {
         }
         return tileStatus;
     }
-    Ship getShipFromTile(int x, int y){
+    public Ship getShipFromTile(int x, int y){
         Ship ship = (Ship) battlefield[y][x -1].getObject();
         return ship;
     }
@@ -81,15 +82,15 @@ public class GameBoard {
 //        }
 //    }
 
-    @Contract(pure = true)
-    boolean tileHasShip(int x, int y){
+//    @Contract(pure = true)
+public boolean tileHasShip(int x, int y){
         boolean notEmpty;
         notEmpty = battlefield[y][x - 1].hasObject();
 
         return notEmpty;
     }
 
-    void showGameBoard(){
+    public void showGameBoard(){
         for (int i = 0; i < size; i++){
             if ( i == 0){
                 System.out.print(" ");
@@ -124,7 +125,7 @@ public class GameBoard {
             }
     }
 
-    String setItemOrientation(int orientation){
+    public String setItemOrientation(int orientation){
         String orientationSet;
         if (orientation == 1){
             orientationSet = "Horizontal";
@@ -137,7 +138,7 @@ public class GameBoard {
         return orientationSet;
     }
 
-    static int convertY(String y){
+    public static int convertY(String y){
         int yAxis = 0;
 
         if (y.toUpperCase().charAt(0)< 64 || y.toUpperCase().charAt(0) < 91) {

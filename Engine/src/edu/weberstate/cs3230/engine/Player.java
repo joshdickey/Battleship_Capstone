@@ -1,6 +1,6 @@
-package edu.weberstate.cs3230;
+package edu.weberstate.cs3230.engine;
 
-import edu.weberstate.cs3230.assets.Ship;
+//import edu.weberstate.cs3230.assets.Ship;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public class Player {
         return name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         if (name == null){
             throw new IllegalArgumentException("Name cannot be null");
         }else {

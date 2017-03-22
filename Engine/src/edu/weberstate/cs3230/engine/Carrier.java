@@ -1,18 +1,17 @@
-package edu.weberstate.cs3230.assets;
+package edu.weberstate.cs3230.engine;
 
 /**
  * Created by joshd on 2/5/2017.
  */
-public class Cruiser extends Ship {
+public class Carrier extends Ship {
 
-    private static final int SHIP_SIZE = 3;
+    private static final int SHIP_SIZE = 5;
 
-
-    public Cruiser(){
-        this("Cruiser");
+    public  Carrier(){
+        this("Carrier");
     }
 
-    public Cruiser(String name) {
+    public Carrier(String name) {
         super(name);
     }
     @Override
@@ -24,5 +23,4 @@ public class Cruiser extends Ship {
     public int getHitCount() {
         return hitCount;
     }
-
 }

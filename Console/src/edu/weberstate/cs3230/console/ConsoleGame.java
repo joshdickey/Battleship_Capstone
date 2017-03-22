@@ -1,6 +1,7 @@
-package edu.weberstate.cs3230;
+package edu.weberstate.cs3230.console;
 
-import edu.weberstate.cs3230.assets.*;
+import edu.weberstate.cs3230.engine.*;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -237,15 +238,11 @@ public class ConsoleGame implements IGame{
 
         scanner = new Scanner(System.in);
 
-//        gameboard = new GameBoard(boardSize);
-        boolean breakout;
-
         //generates ships into an array for each player
         for (Player player: players) {
             player.setPlayerShips(generateShips());
         }
 
-        breakout = false;
         boolean isSetup = false;
 
         int placedShipCount = 0;
@@ -263,36 +260,14 @@ public class ConsoleGame implements IGame{
                 attacker = players.get(1);
             }
 
-//            attacker.getGameboard().showGameBoard();
-
             if (getCoordinate()){
                 continue;
             }
-//            System.out.println(String.format("Enter a letter A-%c: ", changeYToRowLabel(boardSize)));
-//            String letter = userInput.next();
-//            y = GameBoard.convertY(letter);
-//
-//            if (y == -1 ){
-//                continue;
-//            }
-//            else if (y > boardSize || y < 0){
-//                System.out.println(String.format("You Must enter a letter from A-%c: \n\tStarting Over", changeYToRowLabel(boardSize)));
-//                continue;
-//            }
-//
-//            System.out.println("Enter a Number 1-" + boardSize + ": ");
-//            x = Integer.parseInt(userInput.next());
-//
-//            if (x > boardSize || x < 1) {
-//                System.out.println("You Must enter a number from 1-" + boardSize);
-//                continue;
-//            }
 
             if (attacker.getGameboard().tileHasShip(x,y)){
                 System.out.print("This cell has already been hit,\n\tchose again!\n\n");
                 continue;
             }
-
 
             Ship chosenShip = chooseAShip(scanner, attacker);
 
@@ -314,7 +289,6 @@ public class ConsoleGame implements IGame{
 
             if( placedShipCount == 10){
                 isSetup = true;
-                break;
             }
 
 //            String again = scanner.next();
