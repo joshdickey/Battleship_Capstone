@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/CS3230_Battleship.iml" filepath="$PROJECT_DIR$/CS3230_Battleship.iml" />
       <module fileurl="file://$PROJECT_DIR$/Console/Console.iml" filepath="$PROJECT_DIR$/Console/Console.iml" />
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
     </modules>
   </component>
 </project>
