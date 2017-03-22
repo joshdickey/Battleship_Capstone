@@ -18,10 +18,13 @@ public class MainUI extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+    public void start(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("mainUI.fxml"));
+        stage.setTitle("Hello World");
+        stage.setScene(new Scene(root, 600, 400));
+        stage.setAlwaysOnTop(true);
+        stage.setResizable(false);
+
+        stage.show();
     }
 }
