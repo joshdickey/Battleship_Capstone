@@ -31,7 +31,7 @@
       <RowConstraints maxHeight="191.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ProgressBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="253.0" progress="0.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <ProgressBar fx:id="progressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="253.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
       <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <columns>
             <TableColumn prefWidth="117.0" text="Priority" />
@@ -44,7 +44,7 @@
       <Button fx:id="btnAdd" mnemonicParsing="false" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <HBox alignment="CENTER" prefHeight="133.0" prefWidth="323.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <children>
-            <Label text="Progress" />
+            <Label graphicTextGap="5.0" text="Progress" />
             <Spinner fx:id="spinnerProgress" />
             <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="21.0" prefWidth="116.0" text="CheckBox" />
          </children>

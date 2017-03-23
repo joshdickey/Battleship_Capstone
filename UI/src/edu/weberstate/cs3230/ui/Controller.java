@@ -37,9 +37,8 @@ public class Controller implements Initializable{
                 }else{
                     checkBox.setSelected(false);
                 }
-                if (newValue != 0) {
-                    progressBar.setProgress(1.0 * (newValue / 50));
-                }
+                progressBar.setProgress(1.0 * newValue / 50);
+
             }
         });
     }
