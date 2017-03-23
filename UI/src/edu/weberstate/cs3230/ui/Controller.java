@@ -1,7 +1,10 @@
 package edu.weberstate.cs3230.ui;
 
+import com.sun.javafx.tk.Toolkit;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,6 +16,7 @@ import java.util.ResourceBundle;
  * Created by jdickey on 3/22/2017.
  */
 public class Controller implements Initializable{
+
     @FXML
     private TextField taskDescription;
     @FXML
@@ -37,9 +41,12 @@ public class Controller implements Initializable{
                 }else{
                     checkBox.setSelected(false);
                 }
-                progressBar.setProgress(1.0 * newValue / 50);
-
             }
         });
+
+        ReadOnlyIntegerProperty intProgress = ReadOnlyIntegerProperty.readOnlyIntegerProperty(spinnerProgress.valueProperty());
+        progressBar.progressProperty().bind(intProgress.divide(100.0));
+
+
     }
 }

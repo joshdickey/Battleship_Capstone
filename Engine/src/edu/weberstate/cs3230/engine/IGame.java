@@ -13,5 +13,4 @@ public interface IGame {
 
     void addPlayer(String name);
 
-
 }
