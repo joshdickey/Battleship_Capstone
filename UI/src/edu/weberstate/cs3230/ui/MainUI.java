@@ -19,8 +19,8 @@ public class MainUI extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainUI.fxml"));
-//        Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("mainUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         stage.setTitle("Battleship");
         stage.setScene(new Scene(root, 600, 400));
         stage.setAlwaysOnTop(true);
