@@ -33,7 +33,7 @@
       </HBox>
       <ImageView disable="true" fitHeight="339.0" fitWidth="725.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2">
          <image>
-            <Image url="@res/battleshipLogo.png" />
+            <Image url="@../res/battleshipLogo.png" />
          </image>
          <effect>
             <Blend />
