@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" vgap="5.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" vgap="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.StartController">
+
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="177.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="228.0" />
@@ -25,13 +26,14 @@
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="247.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="70.0" prefWidth="105.0" style="-fx-background-color: grey;" text="Quit Game" textAlignment="CENTER" wrapText="true" HBox.hgrow="SOMETIMES" />
-            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="44.0" prefWidth="105.0" style="-fx-background-color: grey;" text="Start Game" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="btnQuit" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onQuitButtonClicked" prefHeight="44.0" prefWidth="105.0" style="-fx-background-color: grey;" text="Quit Game" textAlignment="CENTER" wrapText="true" HBox.hgrow="SOMETIMES" />
+
+            <Button fx:id="btnStart" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStartButtonClicked" prefHeight="44.0" prefWidth="105.0" style="-fx-background-color: grey;" text="Start Game" textAlignment="CENTER" wrapText="true" />
          </children>
       </HBox>
       <ImageView disable="true" fitHeight="339.0" fitWidth="725.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2">
          <image>
-            <Image url="@res/battleshipLogo.png" />
+            <Image url="@../res/battleshipLogo.png" />
          </image>
          <effect>
             <Blend />
