@@ -8,6 +8,7 @@ import edu.weberstate.cs3230.engine.Ship;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableArray.*;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,9 +25,11 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -99,12 +102,29 @@ public class SetupController implements Initializable{
         String xCord = xCords1.getValue();
         String yCord = yCords1.getValue();
         String orientation = orientation1.getValue();
-        int x = xCords1.getItems().indexOf(xCord) + 2;
+        int x = xCords1.getItems().indexOf(xCord) + 1;
         int y = yCords1.getItems().indexOf(yCord) + 1;
 
-        game.placeShip(shipChoice, x, y, orientation, player1.getGameboard());
+        game.placeShip(shipChoice, x +1, y, orientation, player1.getGameboard());
 
         setGridinGridpane();
+
+
+        int count = 0;
+        for (Node node : gridPlayer1.getChildren()) {
+            if (orientation.equalsIgnoreCase("Horizontal")) {
+                while(count < shipChoice.getShipSize()) {
+                    int row = count + x;
+                    Node cell = getNodeFromGridPane(gridPlayer1, row, y);
+                    node.getProperties().clear();
+                    cell.setUserData(shipChoice);
+                    node.setStyle("#000000");
+                    count++;
+                }
+            }
+        }
+
+
 
 //        for (int i = 0; i < shipChoice.getShipSize(); i++){
 //            if (orientation.equalsIgnoreCase("Horizontal")){
@@ -132,6 +152,12 @@ public class SetupController implements Initializable{
         RowConstraints rowConstraints = new RowConstraints();
         gridPlayer1.getColumnConstraints().addAll(constraints);
         gridPlayer1.getRowConstraints().addAll(rowConstraints);
+
+//        for(int row = 0; row < game.getBoardSize(); row++){
+//            for(int col = 0; col < game.getBoardSize(); col++){
+//                gridPlayer1.getRowIndex(row);
+//            }
+//        }
 
 
 
@@ -175,6 +201,15 @@ public class SetupController implements Initializable{
         player1Ships = player1.getPlayerShips();
 
         btnSaveName1.setDisable(true);
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
 
