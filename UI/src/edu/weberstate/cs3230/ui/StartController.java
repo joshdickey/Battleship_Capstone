@@ -20,29 +20,32 @@ import java.util.ResourceBundle;
  */
 public class StartController implements Initializable{
 
+    private PageNavigationService pageNavigation;
+
     @FXML
     private Button btnStart, btnQuit;
     Parent root;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        try {
-//            root = FXMLLoader.load(getClass().getResource("layout/start.fxml"));
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
 
     }
 
     public void onStartButtonClicked(ActionEvent actionEvent) throws IOException {
-        Stage stage;
-        stage = (Stage) btnStart.getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("layout/setup.fxml"));
 
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        pageNavigation = PageNavigationService.getInstance();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/setup.fxml"));
+
+        pageNavigation.setParent(loader.load());
+//        Stage stage;
+//        stage = (Stage) btnStart.getScene().getWindow();
+//        root = FXMLLoader.load(getClass().getResource("layout/setup.fxml"));
+//
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
 
 
     }

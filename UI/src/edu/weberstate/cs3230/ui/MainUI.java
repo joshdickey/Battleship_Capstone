@@ -26,6 +26,9 @@ public class MainUI extends Application {
         stage.setAlwaysOnTop(true);
         stage.setResizable(false);
 
+
+        PageNavigationService.getInstance().setPrimaryStage(stage);
         stage.show();
+
     }
 }
