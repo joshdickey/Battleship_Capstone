@@ -20,12 +20,14 @@
             <VBox prefHeight="250.0" prefWidth="100.0">
                <children>
                   <Label prefHeight="23.0" prefWidth="103.0" text="Ships" />
-                  <ComboBox prefWidth="150.0" />
-                  <Label text="Coordinates" />
-                  <ComboBox prefWidth="150.0" />
+                  <ComboBox fx:id="ships1" prefWidth="150.0" />
+                  <Label text="X Coordinates" />
+                  <ComboBox prefWidth="150.0" fx:id="xCords1" />
+                  <Label text="Y Coordinates" />
+                  <ComboBox fx:id="yCords1" prefWidth="150.0" />
                   <Label text="Orientation" />
-                  <ComboBox prefWidth="150.0" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
+                  <ComboBox fx:id="orientation1" prefWidth="150.0" />
+                  <Button mnemonicParsing="false" onAction="#onPlaceShipButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
                </children>
             </VBox>
          </children>
@@ -35,8 +37,8 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <Label text="Player Name" />
-            <TextField />
-            <Button mnemonicParsing="false" text="Save Name" />
+            <TextField fx:id="player1Name" />
+            <Button fx:id="btnSaveName1" mnemonicParsing="false" onAction="#onSavePlayerOneNameButtonClicked" text="Save Name" />
          </items>
          <effect>
             <DropShadow />
@@ -44,7 +46,7 @@
       </ToolBar>
    </top>
    <center>
-      <GridPane alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
+      <GridPane fx:id="gridPlayer1" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
@@ -83,15 +85,15 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="10" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="2" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="3" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="4" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="5" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="6" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="7" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="8" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="9" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="10" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="B" textAlignment="CENTER" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="C" textAlignment="CENTER" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="D" textAlignment="CENTER" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="E" textAlignment="CENTER" GridPane.rowIndex="5" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="F" textAlignment="CENTER" GridPane.rowIndex="6" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="G" textAlignment="CENTER" GridPane.rowIndex="7" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="H" textAlignment="CENTER" GridPane.rowIndex="8" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="I" textAlignment="CENTER" GridPane.rowIndex="9" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="J" textAlignment="CENTER" GridPane.rowIndex="10" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="1" textAlignment="CENTER" GridPane.columnIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="2" textAlignment="CENTER" GridPane.columnIndex="2" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="3" textAlignment="CENTER" GridPane.columnIndex="3" />
@@ -111,7 +113,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="190.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="220.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="160.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="70.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="70.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" x="2.0" y="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="100.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="10" GridPane.rowIndex="3" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="190.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="3" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="40.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
@@ -127,7 +129,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="250.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="6" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="130.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="7" GridPane.rowIndex="6" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="220.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="6" GridPane.rowIndex="6" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="220.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="220.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" x="6.0" y="5.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="280.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="6" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="250.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="100.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />

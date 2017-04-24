@@ -24,7 +24,7 @@ public class MainUI extends Application {
         stage.setTitle("Battleship");
         stage.setScene(new Scene(root, 600, 400));
         stage.setAlwaysOnTop(true);
-        stage.setResizable(false);
+        stage.setResizable(true);
 
 
         PageNavigationService.getInstance().setPrimaryStage(stage);

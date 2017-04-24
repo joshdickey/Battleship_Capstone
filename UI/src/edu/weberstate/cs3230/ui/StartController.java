@@ -34,19 +34,14 @@ public class StartController implements Initializable{
 
     public void onStartButtonClicked(ActionEvent actionEvent) throws IOException {
 
+        UIGame game = UIGame.getInstance();
+        game.setBoardSize(11);
+
         pageNavigation = PageNavigationService.getInstance();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/setup.fxml"));
 
         pageNavigation.setParent(loader.load());
-//        Stage stage;
-//        stage = (Stage) btnStart.getScene().getWindow();
-//        root = FXMLLoader.load(getClass().getResource("layout/setup.fxml"));
-//
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-
 
     }
 
