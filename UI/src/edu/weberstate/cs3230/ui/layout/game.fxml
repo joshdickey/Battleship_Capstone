@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.GameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.GameController">
 <left>
     <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <children>
@@ -37,7 +38,7 @@
     </VBox>
 </right>
 <center>
-      <HBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="519.0" prefWidth="800.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
           <GridPane fx:id="playerOneGrid" alignment="CENTER_LEFT" gridLinesVisible="true">
               <children>
@@ -343,6 +344,19 @@
       </HBox>
 </center>
 <top>
-    <Label fx:id="txtTurn" text="Player Turn" BorderPane.alignment="CENTER" />
+    <Label fx:id="txtTurn" text="Player Turn" textFill="#017c2c" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Century" size="40.0" />
+         </font></Label>
 </top>
+    <bottom>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="txtFireResult" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="234.0" text="Status" textAlignment="CENTER" textFill="#d70c0c" BorderPane.alignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#onGameOver" prefHeight="31.0" prefWidth="100.0" text="Quit Game" visible="false" />
+        </VBox>
+    </bottom>
 </BorderPane>

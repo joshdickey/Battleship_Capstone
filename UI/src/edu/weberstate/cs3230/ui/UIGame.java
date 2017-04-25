@@ -20,6 +20,7 @@ public class UIGame implements IGame{
     private List<Player> players;
     private List<Ship> ships;
     private int boardSize;
+    private String gameStatus;
 
     private UIGame() {
         players = new ArrayList<>();
@@ -133,17 +134,22 @@ public class UIGame implements IGame{
     public boolean fireMissile(Player defender, int x, int y){
 
         boolean hit = false;
+        Ship ship = null;
         if (defender.getGameboard().tileHasShip(x, y)){
-            Ship ship = defender.getGameboard().getShipFromTile(x, y);
+            ship = defender.getGameboard().getShipFromTile(x, y);
             System.out.println(ship.damageShip());
             hit = true;
+            setGameStatus("Hit!");
             if (ship.getStatus().equalsIgnoreCase("destroyed")){
+                setGameStatus("You sunk " + defender.getName() + "'s " + ship.getName());
                 System.out.println("You sunk " + defender.getName() + "'s " + ship.getName());
                 defender.removeDestroyedShip();
+
             }
 //            gameBoard.markBoard(ship, x, y);
         }else {
             System.out.println("\nMISS!");
+            setGameStatus("Miss!");
 //            gameBoard.markBoard(ship, x, y);
             //for testing
         }
@@ -152,4 +158,17 @@ public class UIGame implements IGame{
         defender.getGameboard().showGameBoard();
         return hit;
     }
+
+    public void setGameStatus(String status){
+        gameStatus = status;
+    }
+
+    public String getGameStatus(){
+        if (gameStatus.isEmpty()){
+            gameStatus = "No Status";
+        }
+        return gameStatus;
+    }
+
+
 }

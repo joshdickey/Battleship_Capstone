@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -49,18 +50,23 @@ public class SetupController implements Initializable{
     GridPane gridPlayer1, gridPlayer2;
     @FXML
     TextField player1Name, player2Name;
+    @FXML
+    Label txtStatus, txtStatusTwo;
 
 
     Player player1, player2;
     List<Ship> player1Ships, player2Ships;
     UIGame game;
-
+    private List<String> playerTwoChoice, playerOneChoice;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         player1Ships = new ArrayList<>();
         player2Ships = new ArrayList<>();
+        playerTwoChoice = new ArrayList<>();
+        playerOneChoice = new ArrayList<>();
+
 
     }
 
@@ -107,19 +113,31 @@ public class SetupController implements Initializable{
         }
 
 
-        ships1.getItems().remove(shipName);
-        if (ships1.getItems().isEmpty()){
-            btnPlaceShipPlayer1.setDisable(true);
-        }
-
         String xCord = xCords1.getValue();
         String yCord = yCords1.getValue();
+
+        String cords = xCord + yCord;
+
+        if(playerOneChoice.contains(cords)){
+            status("Choose another Coordinate");
+            return;
+        }else {
+            playerOneChoice.add(cords);
+        }
+
+
         String orientation = orientation1.getValue();
         int x = xCords1.getItems().indexOf(xCord) + 1;
         int y = yCords1.getItems().indexOf(yCord) + 1;
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player1.getGameboard());
 
+
+        ships1.getItems().remove(shipName);
+        if (ships1.getItems().isEmpty()){
+            btnPlaceShipPlayer1.setDisable(true);
+            btnNextPlayer.setDisable(false);
+        }
 //        setGridinGridpane();
 
 
@@ -159,6 +177,10 @@ public class SetupController implements Initializable{
 
     }
 
+    private void status(String s) {
+        txtStatus.setText(s);
+    }
+
     public void onPlaceShipPlayerTwoButtonClicked(ActionEvent actionEvent) throws IOException{
         boolean placed = false;
         String shipName = ships2.getValue();
@@ -172,19 +194,29 @@ public class SetupController implements Initializable{
             }
         }
 
-
-        ships2.getItems().remove(shipName);
-        if (ships2.getItems().isEmpty()){
-            btnPlaceShipPlayer2.setDisable(true);
-        }
-
         String xCord = xCords2.getValue();
         String yCord = yCords2.getValue();
+
+        String cords = xCord + yCord;
+
+        if(playerTwoChoice.contains(cords)){
+            statusTwo("Choose another Coordinate");
+            return;
+        }else {
+            playerTwoChoice.add(cords);
+        }
+
         String orientation = orientation2.getValue();
         int x = xCords2.getItems().indexOf(xCord) + 1;
         int y = yCords2.getItems().indexOf(yCord) + 1;
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player2.getGameboard());
+
+        ships2.getItems().remove(shipName);
+        if (ships2.getItems().isEmpty()){
+            btnPlaceShipPlayer2.setDisable(true);
+            btnDone.setDisable(false);
+        }
 
 //        setGridinGridpane();
 
@@ -270,7 +302,8 @@ public class SetupController implements Initializable{
         player1Ships = player1.getPlayerShips();
 
         btnSaveName1.setDisable(true);
-
+        status("Place Ships");
+        btnPlaceShipPlayer1.setDisable(false);
         setupPlayer1();
     }
 
@@ -282,10 +315,14 @@ public class SetupController implements Initializable{
         game.addPlayer(player2);
 
         player2Ships = player2.getPlayerShips();
-
+        statusTwo("Place Ships");
         btnSaveName2.setDisable(true);
-
+        btnPlaceShipPlayer2.setDisable(false);
         setupPlayer2();
+    }
+
+    private void statusTwo(String s) {
+        txtStatusTwo.setText(s);
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, Integer col, Integer row) {

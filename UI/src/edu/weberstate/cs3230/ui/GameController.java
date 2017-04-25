@@ -1,6 +1,8 @@
 package edu.weberstate.cs3230.ui;
 
 import edu.weberstate.cs3230.engine.Player;
+import edu.weberstate.cs3230.engine.Ship;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -27,20 +30,24 @@ public class GameController implements Initializable {
     private Player attacker, defender;
     private UIGame game;
     private List<Player> playerList;
+    private List<String> playerOneShots, playerTwoShots;
 
     @FXML
     ComboBox<String> player1X, player1Y, player2X, player2Y;
     @FXML
-    Button btnFirePlayer1, btnFirePlayer2;
+    Button btnFirePlayer1, btnFirePlayer2, btnQuit;
     @FXML
     Label txtTurn, txtPlayerOne, txtPlayerTwo;
+    @FXML
+    Label txtFireResult;
     @FXML
     GridPane playerOneGrid, playerTwoGrid;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game = UIGame.getInstance();
-
+        playerOneShots = new ArrayList<>();
+        playerTwoShots = new ArrayList<>();
 
         for (Player player : game.getPlayers()) {
             player.getGameboard().setGamePhase("battle");
@@ -96,22 +103,50 @@ public class GameController implements Initializable {
     public void playerTwoFire(ActionEvent actionEvent) throws IOException {
         String xCord = player2X.getValue();
         String yCord = player2Y.getValue();
+        String cords = xCord + yCord;
+
+        if(playerTwoShots.contains(cords)){
+            status("Choose another Coordinate");
+            return;
+        }else {
+            playerTwoShots.add(cords);
+        }
 
         int x = player2X.getItems().indexOf(xCord) + 1;
         int y = player2Y.getItems().indexOf(yCord) + 1;
 
         markBoard(defender, x, y);
+        testWinner();
         setActivePlayer();
 
     }
     public void playerOneFire(ActionEvent actionEvent) throws  IOException{
         String xCord = player1X.getValue();
         String yCord = player1Y.getValue();
+        String cords = xCord + yCord;
+        if(playerOneShots.contains(cords)){
+            status("Choose another Coordinate");
+            return;
+        }else {
+            playerOneShots.add(cords);
+        }
+
+//        for (String shot : playerOneShots) {
+//            if(cords.equalsIgnoreCase(shot)){
+//                status("Choose another Coordinate");
+//                return;
+//            }
+//            else {
+//                playerOneShots.add(cords);
+//            }
+//        }
+
 
         int x = player1X.getItems().indexOf(xCord) + 1;
         int y = player1Y.getItems().indexOf(yCord) + 1;
 
         markBoard(defender, x, y);
+        testWinner();
         setActivePlayer();
 
     }
@@ -134,6 +169,7 @@ public class GameController implements Initializable {
                 rect.setFill(Paint.valueOf("#000000"));
             }
         }
+        status(game.getGameStatus());
 
     }
 
@@ -144,5 +180,30 @@ public class GameController implements Initializable {
             }
         }
         return null;
+    }
+
+    public void status(String status) {
+
+        txtFireResult.setText(status);
+    }
+
+
+
+    private void testWinner() {
+        if (defender.getPlayerShips().size() == 0) {
+            attacker.setWinner(true);
+        }
+
+        if (attacker.isWinner()) {
+            System.out.println(attacker.getName() + " is the winner!");
+            status(attacker.getName() + " is the winner!");
+            btnFirePlayer1.setDisable(true);
+            btnFirePlayer2.setDisable(true);
+            btnQuit.setVisible(true);
+        }
+    }
+
+    public void onGameOver(ActionEvent actionEvent)throws IOException{
+        Platform.exit();
     }
 }

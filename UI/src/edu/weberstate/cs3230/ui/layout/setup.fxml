@@ -12,15 +12,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="400.0"
-            prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.91"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.SetupController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.SetupController">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -34,7 +28,7 @@
                   <ComboBox fx:id="yCords1" prefWidth="150.0" />
                   <Label text="Orientation" />
                   <ComboBox fx:id="orientation1" prefWidth="150.0" />
-                  <Button fx:id="btnPlaceShipPlayer1" mnemonicParsing="false" onAction="#onPlaceShipPlayerOneButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
+                  <Button fx:id="btnPlaceShipPlayer1" disable="true" mnemonicParsing="false" onAction="#onPlaceShipPlayerOneButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
                </children>
             </VBox>
          </children>
@@ -208,8 +202,15 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onNextPlayerButtonClicked" prefHeight="31.0" prefWidth="100.0" text="Next Player" />
+            <Button fx:id="btnNextPlayer" disable="true" mnemonicParsing="false" onAction="#onNextPlayerButtonClicked" prefHeight="31.0" prefWidth="100.0" text="Next Player" />
          </children>
       </VBox>
    </right>
+   <bottom>
+      <Label fx:id="txtStatus" text="Enter Name" textFill="#f20202" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+   </bottom>
 </BorderPane>
