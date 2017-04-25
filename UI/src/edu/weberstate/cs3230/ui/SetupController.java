@@ -117,6 +117,19 @@ public class SetupController implements Initializable{
         String yCord = yCords1.getValue();
 
         String cords = xCord + yCord;
+        String orientation = orientation1.getValue();
+        int x = xCords1.getItems().indexOf(xCord) + 1;
+        int y = yCords1.getItems().indexOf(yCord) + 1;
+
+        if (orientation.equalsIgnoreCase("Horizontal") && shipChoice.getShipSize() + x > game.getBoardSize()+1){
+            status("Ship goes off Grid Choose another Coordinate");
+            return;
+        }
+        if (orientation.equalsIgnoreCase("Vertical") && (shipChoice.getShipSize() + y -1) > game.getBoardSize()){
+            status("Ship goes off Grid Choose another Coordinate");
+            return;
+        }
+
 
         if(playerOneChoice.contains(cords)){
             status("Choose another Coordinate");
@@ -126,9 +139,7 @@ public class SetupController implements Initializable{
         }
 
 
-        String orientation = orientation1.getValue();
-        int x = xCords1.getItems().indexOf(xCord) + 1;
-        int y = yCords1.getItems().indexOf(yCord) + 1;
+
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player1.getGameboard());
 
@@ -196,8 +207,20 @@ public class SetupController implements Initializable{
 
         String xCord = xCords2.getValue();
         String yCord = yCords2.getValue();
+        int x = xCords2.getItems().indexOf(xCord) + 1;
+        int y = yCords2.getItems().indexOf(yCord) + 1;
+        String orientation = orientation2.getValue();
 
         String cords = xCord + yCord;
+
+        if (orientation.equalsIgnoreCase("Horizontal") && shipChoice.getShipSize() + x > game.getBoardSize()+1){
+            statusTwo("Ship goes off Grid Choose another Coordinate");
+            return;
+        }
+        if (orientation.equalsIgnoreCase("Vertical") && (shipChoice.getShipSize() + y -1) > game.getBoardSize()){
+            statusTwo("Ship goes off Grid Choose another Coordinate");
+            return;
+        }
 
         if(playerTwoChoice.contains(cords)){
             statusTwo("Choose another Coordinate");
@@ -206,9 +229,6 @@ public class SetupController implements Initializable{
             playerTwoChoice.add(cords);
         }
 
-        String orientation = orientation2.getValue();
-        int x = xCords2.getItems().indexOf(xCord) + 1;
-        int y = yCords2.getItems().indexOf(yCord) + 1;
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player2.getGameboard());
 
