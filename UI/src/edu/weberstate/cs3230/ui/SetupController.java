@@ -130,15 +130,19 @@ public class SetupController implements Initializable{
             return;
         }
 
+        if (game.cantPlaceShip(shipChoice, x, y - 1, orientation, player1.getGameboard())){
+            status("Ship collision, choose another Coordinate");
+            return;
+        }
+
 
         if(playerOneChoice.contains(cords)){
             status("Choose another Coordinate");
             return;
         }else {
             playerOneChoice.add(cords);
+            status("Place Ships");
         }
-
-
 
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player1.getGameboard());
@@ -222,12 +226,19 @@ public class SetupController implements Initializable{
             return;
         }
 
+        if (game.cantPlaceShip(shipChoice, x, y - 1, orientation, player2.getGameboard())){
+            statusTwo("Ship collision, choose another Coordinate");
+            return;
+        }
+
         if(playerTwoChoice.contains(cords)){
             statusTwo("Choose another Coordinate");
             return;
         }else {
             playerTwoChoice.add(cords);
+            statusTwo("Place Ships");
         }
+
 
 
         placed = game.placeShip(shipChoice, x, y - 1, orientation, player2.getGameboard());

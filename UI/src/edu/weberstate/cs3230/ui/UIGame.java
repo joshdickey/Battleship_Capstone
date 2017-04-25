@@ -170,5 +170,24 @@ public class UIGame implements IGame{
         return gameStatus;
     }
 
+    public boolean cantPlaceShip(Ship ship, int x, int y, String orientation, GameBoard gameBoard){
+        boolean cantPlace = false;
 
+        if (orientation.equalsIgnoreCase("horizontal") && ship.getShipSize() + x <= boardSize+1){
+            for(int i = 0; i < ship.getShipSize(); i++) {
+                cantPlace =  gameBoard.tileHasShip(x + i,y);
+            }
+
+        }else if (orientation.equalsIgnoreCase("vertical") && ship.getShipSize() + y <= boardSize){
+            for(int i = 0; i < ship.getShipSize(); i++) {
+                cantPlace =  gameBoard.tileHasShip(x ,y + i);
+            }
+
+        }else{
+            System.out.print("ship has not been placed");
+        }
+
+        return cantPlace;
+
+    }
 }
