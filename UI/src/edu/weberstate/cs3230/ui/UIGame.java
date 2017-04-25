@@ -1,6 +1,12 @@
 package edu.weberstate.cs3230.ui;
 
 import edu.weberstate.cs3230.engine.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.StackPaneBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +37,6 @@ public class UIGame implements IGame{
 
     @Override
     public void startGame() {
-
 
     }
 
@@ -88,11 +93,36 @@ public class UIGame implements IGame{
 
 
         if (orientation.equalsIgnoreCase("horizontal") && ship.getShipSize() + x <= boardSize){
-            gameBoard.placeInGameTile(ship, x, y);
+            for(int i = 0; i < ship.getShipSize(); i++) {
+                gameBoard.placeInGameTile(ship, shipXPlacementIndex++, y);
+            }
+            ship.markAsPlaced();
         }else if (orientation.equalsIgnoreCase("vertical") && ship.getShipSize() + x <= boardSize){
-            gameBoard.placeInGameTile(ship, x, y);
+            for(int i = 0; i < ship.getShipSize(); i++) {
+                gameBoard.placeInGameTile(ship, x, shipYPlacementIndex++);
+            }
+            ship.markAsPlaced();
         }else{
             System.out.print("ship has not been placed\n\tship out of bounds");
         }
+    }
+
+    @FXML
+    GridPane gridPlayer1;
+
+    private StackPane[][] backdrop;
+
+    public Node tiles(){
+
+        GridPane board = new GridPane();
+        for (int col = 0; col < boardSize; col++){
+            for (int row = 0; row < boardSize; row++){
+                StackPane tile = new StackPane();
+                tile.setStyle("-fx-background-color: #FFFFFF00");
+//                backdrop[row][col] = tile;
+                board.add(tile, col, row);
+            }
+        }
+        return board;
     }
 }

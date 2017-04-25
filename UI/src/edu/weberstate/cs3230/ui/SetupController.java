@@ -23,15 +23,17 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.awt.*;
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+
+import static com.sun.prism.paint.Color.GREEN;
+import static com.sun.prism.paint.Color.RED;
 
 /**
  * Created by jdickey on 4/24/2017.
@@ -90,6 +92,7 @@ public class SetupController implements Initializable{
 
     }
 
+
     public void onPlaceShipButtonClicked(ActionEvent actionEvent) throws IOException{
 
         String shipName = ships1.getValue();
@@ -107,58 +110,33 @@ public class SetupController implements Initializable{
 
         game.placeShip(shipChoice, x +1, y, orientation, player1.getGameboard());
 
-        setGridinGridpane();
+//        setGridinGridpane();
 
 
         int count = 0;
         for (Node node : gridPlayer1.getChildren()) {
             if (orientation.equalsIgnoreCase("Horizontal")) {
                 while(count < shipChoice.getShipSize()) {
-                    int row = count + x;
-                    Node cell = getNodeFromGridPane(gridPlayer1, row, y);
-                    node.getProperties().clear();
-                    cell.setUserData(shipChoice);
-                    node.setStyle("#000000");
+                    int col = count + x;
+                    Node cell = getNodeFromGridPane(gridPlayer1, col, y);
+                    if (cell != null){
+                        cell.setUserData(shipChoice);
+                    }
+//                    cell.setStyle("-fx-background-color: aqua");
+//                    cell.setUserData(shipChoice);
+//                    node.setStyle("-fx-background-color: aqua");
                     count++;
                 }
             }
         }
 
 
-
-//        for (int i = 0; i < shipChoice.getShipSize(); i++){
-//            if (orientation.equalsIgnoreCase("Horizontal")){
-//                for (Node node : gridPlayer1.getChildren()) {
-//                    if (gridPlayer1.getRowIndex(node) == y && gridPlayer1.getColumnIndex(node) == x){
-//
-//                        for (int i = 0; i < shipChoice.getShipSize(); i++){
-//                            if (x == gridPlayer1.getColumnIndex(node) + i){
-//                                node.setStyle("#00000");
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-////        }
-
-
     }
 
     private void setGridinGridpane() {
         ObservableList<Node> children = gridPlayer1.getChildren();
-//        gridPlayer1.add(shipChoice, x, y, );
 
-        ColumnConstraints constraints = new ColumnConstraints();
-        RowConstraints rowConstraints = new RowConstraints();
-        gridPlayer1.getColumnConstraints().addAll(constraints);
-        gridPlayer1.getRowConstraints().addAll(rowConstraints);
-
-//        for(int row = 0; row < game.getBoardSize(); row++){
-//            for(int col = 0; col < game.getBoardSize(); col++){
-//                gridPlayer1.getRowIndex(row);
-//            }
-//        }
-
+        gridPlayer1 = (GridPane)game.tiles();
 
 
     }
@@ -203,9 +181,12 @@ public class SetupController implements Initializable{
         btnSaveName1.setDisable(true);
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+    private Node getNodeFromGridPane(GridPane gridPane, Integer col, Integer row) {
         for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+            if (Objects.equals(gridPlayer1.getColumnIndex(node), col) && Objects.equals(gridPlayer1.getRowIndex(node), row)) {
+                Rectangle rect = (Rectangle) node;
+                rect.setFill(Paint.valueOf("#00ff00"));
+
                 return node;
             }
         }
