@@ -71,12 +71,18 @@ public class GameController implements Initializable {
             btnFirePlayer1.setDisable(false);
             btnFirePlayer2.setDisable(true);
 
+            playerTwoGrid.setDisable(false);
+            playerOneGrid.setDisable(true);
+
         }else if (attacker == playerList.get(0)){
             attacker = playerList.get(1);
             defender = playerList.get(0);
 
             btnFirePlayer1.setDisable(true);
+            playerTwoGrid.setDisable(true);
+            playerOneGrid.setDisable(false);
             btnFirePlayer2.setDisable(false);
+
 
         }else {
             attacker = playerList.get(0);
@@ -84,6 +90,8 @@ public class GameController implements Initializable {
 
             btnFirePlayer1.setDisable(false);
             btnFirePlayer2.setDisable(true);
+            playerTwoGrid.setDisable(false);
+            playerOneGrid.setDisable(true);
         }
         txtTurn.setText(attacker.getName() + "'s turn");
 

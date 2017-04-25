@@ -351,7 +351,7 @@
 </top>
     <bottom>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-            <Label fx:id="txtFireResult" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="234.0" text="Status" textAlignment="CENTER" textFill="#d70c0c" BorderPane.alignment="CENTER">
+            <Label fx:id="txtFireResult" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="400.0" text="Status" textAlignment="CENTER" textFill="#d70c0c" wrapText="true" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
                 <font>
                     <Font name="System Bold" size="24.0" />
                 </font>
