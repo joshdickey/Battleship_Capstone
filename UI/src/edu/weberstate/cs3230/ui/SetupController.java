@@ -41,7 +41,7 @@ import static com.sun.prism.paint.Color.RED;
 public class SetupController implements Initializable{
 
     @FXML
-    Button btnNextPlayer, btnDone, btnSaveName1, btnSavename2;
+    Button btnNextPlayer, btnDone, btnSaveName1, btnSaveName2, btnPlaceShipPlayer1, btnPlaceShipPlayer2;
     @FXML
     private ComboBox<String> ships1, xCords1, yCords1, orientation1,ships2, xCords2, yCords2, orientation2;
 
@@ -49,6 +49,7 @@ public class SetupController implements Initializable{
     GridPane gridPlayer1, gridPlayer2;
     @FXML
     TextField player1Name, player2Name;
+
 
     Player player1, player2;
     List<Ship> player1Ships, player2Ships;
@@ -61,14 +62,11 @@ public class SetupController implements Initializable{
         player1Ships = new ArrayList<>();
         player2Ships = new ArrayList<>();
 
-        setupPlayer1();
-
-
     }
 
     private void setupPlayer2() {
         ships2.getItems().addAll("Carrier", "BattleShip", "Cruiser", "Submarine", "Destroyer");
-        ships2.setPromptText("Ships");
+//        ships2.setPromptText("Ships");
 
         for (int i = 1; i <=10; i++){
             xCords2.getItems().add("" +i);
@@ -76,12 +74,13 @@ public class SetupController implements Initializable{
 
         yCords2.getItems().addAll("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
         orientation2.getItems().addAll("Vertical", "Horizontal");
+        game.getPlayers().get(1).getGameboard().setGamePhase("setup");
     }
 
     private void setupPlayer1() {
 
         ships1.getItems().addAll("Carrier", "BattleShip", "Cruiser", "Submarine", "Destroyer");
-        ships1.setPromptText("Ships");
+//        ships1.setPromptText("Ships");
 
         for (int i = 1; i <=10; i++){
             xCords1.getItems().add("" +i);
@@ -89,18 +88,29 @@ public class SetupController implements Initializable{
         }
         yCords1.getItems().addAll("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
         orientation1.getItems().addAll("Vertical", "Horizontal");
+        game.getPlayers().get(0).getGameboard().setGamePhase("setup");
 
     }
 
 
-    public void onPlaceShipButtonClicked(ActionEvent actionEvent) throws IOException{
-
+    public void onPlaceShipPlayerOneButtonClicked(ActionEvent actionEvent) throws IOException{
+        boolean placed = false;
         String shipName = ships1.getValue();
         int index = ships1.getItems().indexOf(shipName);
 
-        Ship shipChoice = player1Ships.get(index);
+        Ship shipChoice = null;
+
+        for (Ship ship : player1Ships) {
+            if (ship.getName().equalsIgnoreCase(shipName)){
+                 shipChoice = ship;
+            }
+        }
+
 
         ships1.getItems().remove(shipName);
+        if (ships1.getItems().isEmpty()){
+            btnPlaceShipPlayer1.setDisable(true);
+        }
 
         String xCord = xCords1.getValue();
         String yCord = yCords1.getValue();
@@ -108,24 +118,106 @@ public class SetupController implements Initializable{
         int x = xCords1.getItems().indexOf(xCord) + 1;
         int y = yCords1.getItems().indexOf(yCord) + 1;
 
-        game.placeShip(shipChoice, x +1, y, orientation, player1.getGameboard());
+        placed = game.placeShip(shipChoice, x, y - 1, orientation, player1.getGameboard());
 
 //        setGridinGridpane();
 
 
-        int count = 0;
-        for (Node node : gridPlayer1.getChildren()) {
-            if (orientation.equalsIgnoreCase("Horizontal")) {
-                while(count < shipChoice.getShipSize()) {
-                    int col = count + x;
-                    Node cell = getNodeFromGridPane(gridPlayer1, col, y);
-                    if (cell != null){
-                        cell.setUserData(shipChoice);
+        if (placed) {
+            int count = 0;
+            for (Node node : gridPlayer1.getChildren()) {
+                if (orientation.equalsIgnoreCase("Horizontal")) {
+                    while(count < shipChoice.getShipSize()) {
+                        int col = count + x;
+                        Node cell = getNodeFromGridPane(gridPlayer1, col, y);
+                        if (cell != null){
+                            cell.setUserData(shipChoice);
+                            Rectangle rect = (Rectangle) cell;
+                            rect.setFill(Paint.valueOf("#00ff00"));
+                        }
+    //                    cell.setStyle("-fx-background-color: aqua");
+    //                    cell.setUserData(shipChoice);
+    //                    node.setStyle("-fx-background-color: aqua");
+                        count++;
                     }
-//                    cell.setStyle("-fx-background-color: aqua");
-//                    cell.setUserData(shipChoice);
-//                    node.setStyle("-fx-background-color: aqua");
-                    count++;
+                }
+                if(orientation.equalsIgnoreCase("Vertical")){
+                    while(count < shipChoice.getShipSize()) {
+                        int row = count + y;
+                        Node cell = getNodeFromGridPane(gridPlayer1, x, row);
+                        if (cell != null) {
+                            cell.setUserData(shipChoice);
+                            Rectangle rect = (Rectangle) cell;
+                            rect.setFill(Paint.valueOf("#00ff00"));
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public void onPlaceShipPlayerTwoButtonClicked(ActionEvent actionEvent) throws IOException{
+        boolean placed = false;
+        String shipName = ships2.getValue();
+        int index = ships2.getItems().indexOf(shipName);
+
+        Ship shipChoice = null;
+
+        for (Ship ship : player2Ships) {
+            if (ship.getName().equalsIgnoreCase(shipName)){
+                shipChoice = ship;
+            }
+        }
+
+
+        ships2.getItems().remove(shipName);
+        if (ships2.getItems().isEmpty()){
+            btnPlaceShipPlayer2.setDisable(true);
+        }
+
+        String xCord = xCords2.getValue();
+        String yCord = yCords2.getValue();
+        String orientation = orientation2.getValue();
+        int x = xCords2.getItems().indexOf(xCord) + 1;
+        int y = yCords2.getItems().indexOf(yCord) + 1;
+
+        placed = game.placeShip(shipChoice, x, y - 1, orientation, player2.getGameboard());
+
+//        setGridinGridpane();
+
+
+        if (placed) {
+            int count = 0;
+            for (Node node : gridPlayer2.getChildren()) {
+                if (orientation.equalsIgnoreCase("Horizontal")) {
+                    while(count < shipChoice.getShipSize()) {
+                        int col = count + x;
+                        Node cell = getNodeFromGridPane(gridPlayer2, col, y);
+                        if (cell != null){
+                            cell.setUserData(shipChoice);
+                            Rectangle rect = (Rectangle) cell;
+                            rect.setFill(Paint.valueOf("#00ff00"));
+                        }
+                        //                    cell.setStyle("-fx-background-color: aqua");
+                        //                    cell.setUserData(shipChoice);
+                        //                    node.setStyle("-fx-background-color: aqua");
+                        count++;
+                    }
+                }
+                if(orientation.equalsIgnoreCase("Vertical")){
+                    while(count < shipChoice.getShipSize()) {
+                        int row = count + y;
+                        Node cell = getNodeFromGridPane(gridPlayer2, x, row);
+                        if (cell != null) {
+                            cell.setUserData(shipChoice);
+                            Rectangle rect = (Rectangle) cell;
+                            rect.setFill(Paint.valueOf("#00ff00"));
+                        }
+                        count++;
+                    }
                 }
             }
         }
@@ -149,7 +241,6 @@ public class SetupController implements Initializable{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layout/setup_player_two.fxml"));
 
         pageNavigation.setParent(loader.load());
-        setupPlayer2();
 
     }
 
@@ -179,14 +270,27 @@ public class SetupController implements Initializable{
         player1Ships = player1.getPlayerShips();
 
         btnSaveName1.setDisable(true);
+
+        setupPlayer1();
+    }
+
+    public void onSavePlayerTwoNameButtonClicked(ActionEvent actionEvent) throws  IOException{
+        player2 = new Player();
+        player2.setName(player2Name.getText());
+
+        game = UIGame.getInstance();
+        game.addPlayer(player2);
+
+        player2Ships = player2.getPlayerShips();
+
+        btnSaveName2.setDisable(true);
+
+        setupPlayer2();
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, Integer col, Integer row) {
         for (Node node : gridPane.getChildren()) {
-            if (Objects.equals(gridPlayer1.getColumnIndex(node), col) && Objects.equals(gridPlayer1.getRowIndex(node), row)) {
-                Rectangle rect = (Rectangle) node;
-                rect.setFill(Paint.valueOf("#00ff00"));
-
+            if (Objects.equals(gridPane.getColumnIndex(node), col) && Objects.equals(gridPane.getRowIndex(node), row)) {
                 return node;
             }
         }

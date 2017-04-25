@@ -25,6 +25,7 @@ public class Player {
 
     public void setGameboard(GameBoard gameboard) {
         this.gameboard = gameboard;
+//        this.gameboard.setGamePhase("setup");
     }
 
     public List<Ship> getPlayerShips() {

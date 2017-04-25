@@ -13,15 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="400.0"
-            prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.91"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.weberstate.cs3230.ui.SetupController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.SetupController">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +27,7 @@
                   <ComboBox fx:id="yCords2" prefWidth="150.0" />
                   <Label text="Orientation" />
                   <ComboBox fx:id="orientation2" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
+                  <Button fx:id="btnPlaceShipPlayer2" mnemonicParsing="false" onAction="#onPlaceShipPlayerTwoButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
                </children>
             </VBox>
          </children>
@@ -45,8 +37,8 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
             <Label text="Player Name" />
-            <TextField />
-          <Button mnemonicParsing="false" text="Save Name" />
+            <TextField fx:id="player2Name" />
+          <Button fx:id="btnSaveName2" mnemonicParsing="false" onAction="#onSavePlayerTwoNameButtonClicked" text="Save Name" />
         </items>
          <effect>
             <DropShadow />
@@ -54,7 +46,7 @@
       </ToolBar>
    </top>
    <center>
-      <GridPane alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
+      <GridPane fx:id="gridPlayer2" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
@@ -93,15 +85,15 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="10" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="2" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="3" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="4" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="5" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="6" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="7" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="8" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="9" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="A" textAlignment="CENTER" GridPane.rowIndex="10" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="B" textAlignment="CENTER" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="C" textAlignment="CENTER" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="D" textAlignment="CENTER" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="E" textAlignment="CENTER" GridPane.rowIndex="5" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="F" textAlignment="CENTER" GridPane.rowIndex="6" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="G" textAlignment="CENTER" GridPane.rowIndex="7" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="H" textAlignment="CENTER" GridPane.rowIndex="8" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="I" textAlignment="CENTER" GridPane.rowIndex="9" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="J" textAlignment="CENTER" GridPane.rowIndex="10" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="1" textAlignment="CENTER" GridPane.columnIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="2" textAlignment="CENTER" GridPane.columnIndex="2" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="30.0" text="3" textAlignment="CENTER" GridPane.columnIndex="3" />

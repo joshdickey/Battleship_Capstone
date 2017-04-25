@@ -13,7 +13,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.SetupController">
+<BorderPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="400.0"
+            prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8.0.91"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.weberstate.cs3230.ui.SetupController">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -27,7 +34,7 @@
                   <ComboBox fx:id="yCords1" prefWidth="150.0" />
                   <Label text="Orientation" />
                   <ComboBox fx:id="orientation1" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" onAction="#onPlaceShipButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
+                  <Button fx:id="btnPlaceShipPlayer1" mnemonicParsing="false" onAction="#onPlaceShipPlayerOneButtonClicked" prefHeight="31.0" prefWidth="101.0" text="Place Ship" />
                </children>
             </VBox>
          </children>

@@ -87,24 +87,28 @@ public class UIGame implements IGame{
         return ships;
     }
 
-    public void placeShip(Ship ship, int x, int y, String orientation, GameBoard gameBoard){
+    public boolean placeShip(Ship ship, int x, int y, String orientation, GameBoard gameBoard){
         int shipXPlacementIndex = x;
-        int shipYPlacementIndex = y;
+        int shipYPlacementIndex = y ;
+        boolean placed = false;
 
-
-        if (orientation.equalsIgnoreCase("horizontal") && ship.getShipSize() + x <= boardSize){
+        if (orientation.equalsIgnoreCase("horizontal") && ship.getShipSize() + x <= boardSize+1){
             for(int i = 0; i < ship.getShipSize(); i++) {
                 gameBoard.placeInGameTile(ship, shipXPlacementIndex++, y);
             }
             ship.markAsPlaced();
-        }else if (orientation.equalsIgnoreCase("vertical") && ship.getShipSize() + x <= boardSize){
+            placed = true;
+        }else if (orientation.equalsIgnoreCase("vertical") && ship.getShipSize() + y <= boardSize){
             for(int i = 0; i < ship.getShipSize(); i++) {
                 gameBoard.placeInGameTile(ship, x, shipYPlacementIndex++);
             }
             ship.markAsPlaced();
+            placed = true;
         }else{
             System.out.print("ship has not been placed\n\tship out of bounds");
         }
+        gameBoard.showGameBoard();
+        return placed;
     }
 
     @FXML
@@ -115,8 +119,8 @@ public class UIGame implements IGame{
     public Node tiles(){
 
         GridPane board = new GridPane();
-        for (int col = 0; col < boardSize; col++){
-            for (int row = 0; row < boardSize; row++){
+        for (int col = 0; col < boardSize + 1; col++){
+            for (int row = 0; row < boardSize + 1; row++){
                 StackPane tile = new StackPane();
                 tile.setStyle("-fx-background-color: #FFFFFF00");
 //                backdrop[row][col] = tile;
@@ -124,5 +128,28 @@ public class UIGame implements IGame{
             }
         }
         return board;
+    }
+
+    public boolean fireMissile(Player defender, int x, int y){
+
+        boolean hit = false;
+        if (defender.getGameboard().tileHasShip(x, y)){
+            Ship ship = defender.getGameboard().getShipFromTile(x, y);
+            System.out.println(ship.damageShip());
+            hit = true;
+            if (ship.getStatus().equalsIgnoreCase("destroyed")){
+                System.out.println("You sunk " + defender.getName() + "'s " + ship.getName());
+                defender.removeDestroyedShip();
+            }
+//            gameBoard.markBoard(ship, x, y);
+        }else {
+            System.out.println("\nMISS!");
+//            gameBoard.markBoard(ship, x, y);
+            //for testing
+        }
+        defender.getGameboard().markBoard(x, y);
+
+        defender.getGameboard().showGameBoard();
+        return hit;
     }
 }

@@ -398,7 +398,6 @@ public class ConsoleGame implements IGame{
         }
         defender.getGameboard().markBoard(x, y);
 
-
     }
 
     private int getCoordinateY() {

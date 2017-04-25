@@ -35,7 +35,7 @@ public class StartController implements Initializable{
     public void onStartButtonClicked(ActionEvent actionEvent) throws IOException {
 
         UIGame game = UIGame.getInstance();
-        game.setBoardSize(11);
+        game.setBoardSize(10);
 
         pageNavigation = PageNavigationService.getInstance();
 
